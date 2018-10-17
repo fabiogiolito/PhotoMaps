@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA616D2421777C0300DB331E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2321777C0300DB331E /* Map.swift */; };
+		DA616D2621777C1700DB331E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2521777C1700DB331E /* Location.swift */; };
+		DA616D292177A7FB00DB331E /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D282177A7FB00DB331E /* InitialViewController.swift */; };
 		DADC39EE2176203F00BB5AF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */; };
 		DADC39F02176203F00BB5AF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC39EF2176203F00BB5AF1 /* ViewController.swift */; };
 		DADC39F32176203F00BB5AF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DADC39F12176203F00BB5AF1 /* Main.storyboard */; };
@@ -15,6 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA616D2321777C0300DB331E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		DA616D2521777C1700DB331E /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		DA616D282177A7FB00DB331E /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		DADC39EA2176203F00BB5AF1 /* PhotoMaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoMaps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DADC39EF2176203F00BB5AF1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +41,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA616D2221777BF200DB331E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DA616D2321777C0300DB331E /* Map.swift */,
+				DA616D2521777C1700DB331E /* Location.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DA616D272177A7B900DB331E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DA616D282177A7FB00DB331E /* InitialViewController.swift */,
+				DADC39EF2176203F00BB5AF1 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		DADC39E12176203F00BB5AF1 = {
 			isa = PBXGroup;
 			children = (
@@ -55,9 +79,10 @@
 			isa = PBXGroup;
 			children = (
 				DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */,
-				DADC39EF2176203F00BB5AF1 /* ViewController.swift */,
-				DADC39F12176203F00BB5AF1 /* Main.storyboard */,
+				DA616D2221777BF200DB331E /* Model */,
+				DA616D272177A7B900DB331E /* Controllers */,
 				DADC39F42176204000BB5AF1 /* Assets.xcassets */,
+				DADC39F12176203F00BB5AF1 /* Main.storyboard */,
 				DADC39F62176204000BB5AF1 /* LaunchScreen.storyboard */,
 				DADC39F92176204000BB5AF1 /* Info.plist */,
 			);
@@ -135,7 +160,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA616D292177A7FB00DB331E /* InitialViewController.swift in Sources */,
 				DADC39F02176203F00BB5AF1 /* ViewController.swift in Sources */,
+				DA616D2421777C0300DB331E /* Map.swift in Sources */,
+				DA616D2621777C1700DB331E /* Location.swift in Sources */,
 				DADC39EE2176203F00BB5AF1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +311,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = S9XPG3G4NU;
 				INFOPLIST_FILE = PhotoMaps/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -300,6 +329,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = S9XPG3G4NU;
 				INFOPLIST_FILE = PhotoMaps/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
