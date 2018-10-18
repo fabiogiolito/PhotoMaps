@@ -13,11 +13,13 @@ class MapListViewController: UITableViewController {
     // =========================================
     // MODEL
     
-    let maps: [Map] = [
-        Map.init(name: "Madrid", locations: [
-        ]),
-        Map.init(name: "Lisboa", locations: []),
-    ]
+    var userData = UserData.init()
+    var maps: [Map] = [] {
+        didSet {
+            userData.maps = maps
+            tableView.reloadData()
+        }
+    }
     
     let mapListItemCellId = "MapListItem"
     
@@ -47,18 +49,23 @@ class MapListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        loadData()
         layoutSubviews()
         
         // Register cells
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: mapListItemCellId)
 
         // If map list is empty, go to new map automatically
-//        autoOpenNewMapIfListIsEmpty()
+        // autoOpenNewMapIfListIsEmpty()
     }
     
 
     // =========================================
     // TABLE VIEW DATA SOURCE
+    
+    func loadData() {
+        maps = userData.maps
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return maps.count
@@ -86,9 +93,15 @@ class MapListViewController: UITableViewController {
     // ACTION FUNCTIONS
 
     @objc func newMapButtonTapped(_ sender: AnyObject?) {
-        DispatchQueue.main.async {
-            self.navigationController?.pushViewController(EditMapViewController(), animated: true)
-        }
+        
+        let newMap = Map.init(name: "New Map", locations: [])
+        maps.append(newMap)
+        print("Updated maps array: ", maps)
+        print("UserDefaults is: ", userData)
+        
+//        DispatchQueue.main.async {
+//            self.navigationController?.pushViewController(EditMapViewController(), animated: true)
+//        }
     }
     
     func autoOpenNewMapIfListIsEmpty() {

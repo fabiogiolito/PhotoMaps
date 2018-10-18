@@ -9,6 +9,7 @@
 import Foundation
 
 struct Map: Codable {
+    
     let name: String
     var locations: [Location]
     
@@ -16,14 +17,11 @@ struct Map: Codable {
     // ==========================
     // FUNCTIONS
     
-    func toJson() -> String {
+    func toJson() -> Data? {
         let encoder = JSONEncoder()
-        do {
-            let jsonData = try encoder.encode(self)
-            return String(data: jsonData, encoding: .utf8)!
-        } catch {
-            print("error decoding")
+        if let jsonData = try? encoder.encode(self) {
+            return jsonData
         }
-        return "{}"
+        return nil
     }
 }

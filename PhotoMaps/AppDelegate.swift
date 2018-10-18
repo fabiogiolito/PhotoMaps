@@ -17,15 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let userMaps = false
+        var userData = UserData.init()
         
         // DEFINE WHICH VIEW CONTROLLER IS ROOT
         let rootVC: UIViewController = {
             var vc: UIViewController
             
             // Check if user has maps
-            if userMaps {
-                print("user has maps")
+            if userData.maps.count > 0 {
                 vc = MapListViewController()
             } else {
                 // Check if user allowed access to photo library
