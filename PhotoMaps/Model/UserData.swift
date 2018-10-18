@@ -23,10 +23,16 @@ struct UserData: Codable {
     init() {
         self.maps = []
         let defaults = UserDefaults.standard
+        
+        // Uncomment and run to clear user defaults
+        // defaults.removeObject(forKey: "UserData")
+        
         if let userData = defaults.object(forKey: "UserData") as? Data {
             let decoder = JSONDecoder()
             if let decoded = try? decoder.decode(UserData.self, from: userData) {
                 self.maps = decoded.maps
+                
+                print("UserDefaults loaded, ", self)
             }
         }
     }
@@ -47,5 +53,6 @@ struct UserData: Codable {
         if let data = self.toJson() {
             defaults.set(data, forKey: "UserData")
         }
+        print("===== DEFAULTS UPDATED =====")
     }
 }

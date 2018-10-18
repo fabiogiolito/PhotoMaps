@@ -13,13 +13,7 @@ class MapListViewController: UITableViewController {
     // =========================================
     // MODEL
     
-    var userData = UserData.init()
-    var maps: [Map] = [] {
-        didSet {
-            userData.maps = maps
-            tableView.reloadData()
-        }
-    }
+    var userData: UserData!
     
     let mapListItemCellId = "MapListItem"
     
@@ -49,7 +43,6 @@ class MapListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        loadData()
         layoutSubviews()
         
         // Register cells
@@ -59,33 +52,41 @@ class MapListViewController: UITableViewController {
         // autoOpenNewMapIfListIsEmpty()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Load data
+        userData = UserData.init()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("data is: ", userData)
+    }
+    
 
     // =========================================
     // TABLE VIEW DATA SOURCE
     
-    func loadData() {
-        maps = userData.maps
-    }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return maps.count
+        return userData.maps.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: mapListItemCellId, for: indexPath)
-        cell.textLabel?.text = maps[indexPath.row].name
+        cell.textLabel?.text = userData.maps[indexPath.row].name
         cell.accessoryType = .detailButton
         return cell
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         let editMapController = EditMapViewController()
-        editMapController.map = maps[indexPath.row]
+        editMapController.map = userData.maps[indexPath.row]
         navigationController?.pushViewController(editMapController, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("open map \(maps[indexPath.row].name)")
+        print("open map \(userData.maps[indexPath.row].name)")
     }
     
 
@@ -94,18 +95,21 @@ class MapListViewController: UITableViewController {
 
     @objc func newMapButtonTapped(_ sender: AnyObject?) {
         
-        let newMap = Map.init(name: "New Map", locations: [])
-        maps.append(newMap)
-        print("Updated maps array: ", maps)
-        print("UserDefaults is: ", userData)
+        let nextId = userData.maps.count
+        let newMap = Map.init(id: nextId, name: "New map \(nextId)", locations: [])
+        userData.maps.append(newMap)
+        tableView.reloadData()
         
-//        DispatchQueue.main.async {
-//            self.navigationController?.pushViewController(EditMapViewController(), animated: true)
-//        }
+        let editController = EditMapViewController()
+        editController.map = newMap
+        
+        DispatchQueue.main.async {
+            self.navigationController?.pushViewController(editController, animated: true)
+        }
     }
     
     func autoOpenNewMapIfListIsEmpty() {
-        if maps.count == 0 { // list is empty
+        if userData.maps.count == 0 { // list is empty
             DispatchQueue.main.async {
                 self.navigationController?.pushViewController(EditMapViewController(), animated: true)
             }

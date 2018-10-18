@@ -15,8 +15,11 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     // =========================================
     // MODEL
     
-    var map = Map.init(name: "New Map", locations: []) {
+    var userData = UserData.init()
+    var map: Map! {
         didSet {
+            print("-- map updated --")
+            userData.maps[map.id] = map
             tableView.reloadData()
         }
     }
@@ -56,6 +59,11 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         // autoOpenPickerIfMapIsEmpty()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("locations in map: ", map.locations.count)
+    }
+    
     // =========================================
     // TABLE VIEW DATA SOURCE
     
@@ -84,8 +92,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let location = map.locations[indexPath.row]
-        print(location.toJson())
+        print("selected row")
     }
     
     
