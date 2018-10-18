@@ -7,9 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30EB07B8FAF84DAFFD23511E /* Pods_PhotoMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCBE0083C6506E90CE31C675 /* Pods_PhotoMaps.framework */; };
+		DA4EF82221780ABA0028B41D /* CustomImagePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA4EF820217809B80028B41D /* CustomImagePickerCell.xib */; };
 		DA616D2421777C0300DB331E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2321777C0300DB331E /* Map.swift */; };
 		DA616D2621777C1700DB331E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2521777C1700DB331E /* Location.swift */; };
 		DA616D292177A7FB00DB331E /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D282177A7FB00DB331E /* InitialViewController.swift */; };
+		DA616D312177CB2200DB331E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2B2177CB2100DB331E /* Colors.swift */; };
+		DA616D322177CB2200DB331E /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2C2177CB2100DB331E /* Buttons.swift */; };
+		DA616D332177CB2200DB331E /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2D2177CB2100DB331E /* Gradient.swift */; };
+		DA616D342177CB2200DB331E /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2E2177CB2100DB331E /* Layout.swift */; };
+		DA616D352177CB2200DB331E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2F2177CB2100DB331E /* TextView.swift */; };
+		DA616D362177CB2200DB331E /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D302177CB2100DB331E /* Font.swift */; };
+		DA616D382177D4D300DB331E /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D372177D4D300DB331E /* Labels.swift */; };
 		DADC39EE2176203F00BB5AF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */; };
 		DADC39F02176203F00BB5AF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC39EF2176203F00BB5AF1 /* ViewController.swift */; };
 		DADC39F32176203F00BB5AF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DADC39F12176203F00BB5AF1 /* Main.storyboard */; };
@@ -18,9 +27,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6CDB68389149251219EE912A /* Pods-PhotoMaps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoMaps.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoMaps/Pods-PhotoMaps.debug.xcconfig"; sourceTree = "<group>"; };
+		C83AB97B828DAB25E20DA550 /* Pods-PhotoMaps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoMaps.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoMaps/Pods-PhotoMaps.release.xcconfig"; sourceTree = "<group>"; };
+		CCBE0083C6506E90CE31C675 /* Pods_PhotoMaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoMaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA4EF820217809B80028B41D /* CustomImagePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomImagePickerCell.xib; sourceTree = "<group>"; };
 		DA616D2321777C0300DB331E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		DA616D2521777C1700DB331E /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		DA616D282177A7FB00DB331E /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		DA616D2B2177CB2100DB331E /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		DA616D2C2177CB2100DB331E /* Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		DA616D2D2177CB2100DB331E /* Gradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
+		DA616D2E2177CB2100DB331E /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		DA616D2F2177CB2100DB331E /* TextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		DA616D302177CB2100DB331E /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		DA616D372177D4D300DB331E /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		DADC39EA2176203F00BB5AF1 /* PhotoMaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoMaps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DADC39EF2176203F00BB5AF1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,12 +55,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30EB07B8FAF84DAFFD23511E /* Pods_PhotoMaps.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A89378C993C9B084F48D44B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6CDB68389149251219EE912A /* Pods-PhotoMaps.debug.xcconfig */,
+				C83AB97B828DAB25E20DA550 /* Pods-PhotoMaps.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9C34BD5F600DB64FF3C6AC2D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CCBE0083C6506E90CE31C675 /* Pods_PhotoMaps.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DA4EF81D217809500028B41D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DA4EF820217809B80028B41D /* CustomImagePickerCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		DA616D2221777BF200DB331E /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -59,11 +105,27 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		DA616D2A2177CAE800DB331E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				DA616D2C2177CB2100DB331E /* Buttons.swift */,
+				DA616D2B2177CB2100DB331E /* Colors.swift */,
+				DA616D302177CB2100DB331E /* Font.swift */,
+				DA616D2D2177CB2100DB331E /* Gradient.swift */,
+				DA616D2E2177CB2100DB331E /* Layout.swift */,
+				DA616D2F2177CB2100DB331E /* TextView.swift */,
+				DA616D372177D4D300DB331E /* Labels.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		DADC39E12176203F00BB5AF1 = {
 			isa = PBXGroup;
 			children = (
 				DADC39EC2176203F00BB5AF1 /* PhotoMaps */,
 				DADC39EB2176203F00BB5AF1 /* Products */,
+				7A89378C993C9B084F48D44B /* Pods */,
+				9C34BD5F600DB64FF3C6AC2D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,13 +140,15 @@
 		DADC39EC2176203F00BB5AF1 /* PhotoMaps */ = {
 			isa = PBXGroup;
 			children = (
+				DADC39F92176204000BB5AF1 /* Info.plist */,
 				DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */,
+				DA616D2A2177CAE800DB331E /* Utils */,
 				DA616D2221777BF200DB331E /* Model */,
 				DA616D272177A7B900DB331E /* Controllers */,
+				DA4EF81D217809500028B41D /* Views */,
 				DADC39F42176204000BB5AF1 /* Assets.xcassets */,
 				DADC39F12176203F00BB5AF1 /* Main.storyboard */,
 				DADC39F62176204000BB5AF1 /* LaunchScreen.storyboard */,
-				DADC39F92176204000BB5AF1 /* Info.plist */,
 			);
 			path = PhotoMaps;
 			sourceTree = "<group>";
@@ -96,9 +160,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DADC39FC2176204000BB5AF1 /* Build configuration list for PBXNativeTarget "PhotoMaps" */;
 			buildPhases = (
+				6E80EA6242D4CEE3EBC59B7E /* [CP] Check Pods Manifest.lock */,
 				DADC39E62176203F00BB5AF1 /* Sources */,
 				DADC39E72176203F00BB5AF1 /* Frameworks */,
 				DADC39E82176203F00BB5AF1 /* Resources */,
+				18AE82429ECFA3D0D9B2FAEC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -149,22 +215,77 @@
 			files = (
 				DADC39F82176204000BB5AF1 /* LaunchScreen.storyboard in Resources */,
 				DADC39F52176204000BB5AF1 /* Assets.xcassets in Resources */,
+				DA4EF82221780ABA0028B41D /* CustomImagePickerCell.xib in Resources */,
 				DADC39F32176203F00BB5AF1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		18AE82429ECFA3D0D9B2FAEC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PhotoMaps/Pods-PhotoMaps-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/TLPhotoPicker/TLPhotoPicker.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TLPhotoPicker.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PhotoMaps/Pods-PhotoMaps-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6E80EA6242D4CEE3EBC59B7E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PhotoMaps-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		DADC39E62176203F00BB5AF1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA616D322177CB2200DB331E /* Buttons.swift in Sources */,
+				DA616D362177CB2200DB331E /* Font.swift in Sources */,
+				DA616D382177D4D300DB331E /* Labels.swift in Sources */,
 				DA616D292177A7FB00DB331E /* InitialViewController.swift in Sources */,
+				DA616D312177CB2200DB331E /* Colors.swift in Sources */,
 				DADC39F02176203F00BB5AF1 /* ViewController.swift in Sources */,
 				DA616D2421777C0300DB331E /* Map.swift in Sources */,
+				DA616D342177CB2200DB331E /* Layout.swift in Sources */,
 				DA616D2621777C1700DB331E /* Location.swift in Sources */,
 				DADC39EE2176203F00BB5AF1 /* AppDelegate.swift in Sources */,
+				DA616D332177CB2200DB331E /* Gradient.swift in Sources */,
+				DA616D352177CB2200DB331E /* TextView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +429,7 @@
 		};
 		DADC39FD2176204000BB5AF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6CDB68389149251219EE912A /* Pods-PhotoMaps.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -326,6 +448,7 @@
 		};
 		DADC39FE2176204000BB5AF1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C83AB97B828DAB25E20DA550 /* Pods-PhotoMaps.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
