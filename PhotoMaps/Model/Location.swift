@@ -8,30 +8,94 @@
 
 import Foundation
 import MapKit
+import Photos
 
-struct Location {
+struct Location: Codable {
+
     var name: String
     var address: String
+    var identifier: String
+    var latitude: Double
+    var longitude: Double
+    var date: Date
     
-    let imageRef: String
     
-    let latitude: Double
-    let longitude: Double
-    let dateTime: Date
+    // =========================================
+    // COMPUTED PROPERTIES
     
-    func coordinate() -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    var photoAsset: PHAsset? {
+        get {
+            let assets = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
+            return assets.firstObject
+        }
     }
     
-    func mapItem() -> MKMapItem {
-        return MKMapItem(placemark: MKPlacemark(coordinate: coordinate()))
+    var coordinate: CLLocationCoordinate2D? {
+        get {
+            return photoAsset?.location?.coordinate
+        }
     }
     
-    func pin() -> MKPointAnnotation {
-        let pin = MKPointAnnotation()
-        pin.coordinate = coordinate()
-        pin.title = name
-        pin.subtitle = address
-        return pin
+    var mapItem: MKMapItem? {
+        get {
+            guard let coordinate = coordinate else { return nil }
+            return MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
+        }
     }
+    
+    var pin: MKPointAnnotation {
+        get {
+            let pin = MKPointAnnotation()
+            guard let coordinate = coordinate else { return pin }
+            pin.coordinate = coordinate
+            pin.title = name
+            pin.subtitle = address
+            return pin
+        }
+    }
+    
+    var image: UIImage {
+        get {
+            return UIImage.fromAsset(photoAsset)
+        }
+    }
+    
+    // ==========================
+    // FUNCTIONS
+    
+    func toJson() -> String {
+        let encoder = JSONEncoder()
+        do {
+            let jsonData = try encoder.encode(self)
+            return String(data: jsonData, encoding: .utf8)!
+        } catch {
+            print("error decoding")
+        }
+        return "{}"
+    }
+    
+//    func fetchReverseGeocodeAddress() {
+//
+//        var returnedLocation = ""
+//        guard let location = photoAsset.location else { return }
+//
+//        CLGeocoder().reverseGeocodeLocation(location) { (placemarks, error) in
+//            if let error = error {
+//                print("error on reverse geocode location: ", error)
+//                return
+//            }
+//            guard let placemark = placemarks?.first else {
+//                print("no placemarks returned on reverse geocode location")
+//                return
+//            }
+//
+//            let streetNumber = placemark.subThoroughfare ?? ""
+//            let streetName = placemark.thoroughfare ?? ""
+//
+//            DispatchQueue.main.async {
+//                self.address = "\(streetNumber) \(streetName)"
+//            }
+//        }
+//    }
+
 }

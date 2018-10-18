@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let userMaps = true
+        let userMaps = false
         
         // DEFINE WHICH VIEW CONTROLLER IS ROOT
         let rootVC: UIViewController = {

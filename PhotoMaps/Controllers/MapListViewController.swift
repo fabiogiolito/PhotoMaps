@@ -16,40 +16,7 @@ class MapListViewController: UITableViewController {
     let maps: [Map] = [
         Map.init(name: "Madrid", locations: [
         ]),
-        Map.init(name: "Lisboa", locations: [
-            Location.init(
-                name: "Mercado da Ribeira",
-                address: "Av. 24 de Julho s/n",
-                imageRef: "",
-                latitude: 38.707060,
-                longitude: -9.146965,
-                dateTime: Date()
-            ),
-            Location.init(
-                name: "Praça Luís de Camões",
-                address: "Largo Luís de Camões",
-                imageRef: "",
-                latitude: 38.710878,
-                longitude: -9.143155,
-                dateTime: Date()
-            ),
-            Location.init(
-                name: "Igreja de São Roque",
-                address: "Largo Trindade Coelho",
-                imageRef: "",
-                latitude: 38.713695,
-                longitude: -9.143203,
-                dateTime: Date()
-            ),
-            Location.init(
-                name: "Miradouro de São Pedro de Alcântara",
-                address: "R. de São Pedro de Alcântara",
-                imageRef: "",
-                latitude: 38.715432,
-                longitude: -9.144185,
-                dateTime: Date()
-            ),
-        ]),
+        Map.init(name: "Lisboa", locations: []),
     ]
     
     let mapListItemCellId = "MapListItem"

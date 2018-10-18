@@ -15,7 +15,11 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     // =========================================
     // MODEL
     
-    var map = Map.init(name: "New Map", locations: [])
+    var map = Map.init(name: "New Map", locations: []) {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     let locationItemCellId = "LocationItem"
     
@@ -49,7 +53,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: locationItemCellId)
         
         // If map is empty, open picker automatically
-//        autoOpenPickerIfMapIsEmpty()
+        // autoOpenPickerIfMapIsEmpty()
     }
     
     // =========================================
@@ -69,7 +73,9 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: locationItemCellId, for: indexPath)
-            cell.textLabel?.text = map.locations[indexPath.row].name
+            let location = map.locations[indexPath.row]
+            cell.textLabel?.text = location.name
+            cell.imageView?.image = location.image
             return cell
         }
         let cell = UITableViewCell()
@@ -77,12 +83,34 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         return cell
     }
     
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let location = map.locations[indexPath.row]
+        print(location.toJson())
+    }
     
     
     // =========================================
     // ACTION FUNCTIONS
+    
+    func addPhotosToMap(assets: [PHAsset]) {
+        for asset in assets {
+            
+            guard let latitude = asset.location?.coordinate.latitude else { return }
+            guard let longitude = asset.location?.coordinate.longitude else { return }
+            guard let date = asset.creationDate else { return }
+            
+            let location = Location.init(
+                name: "New location",
+                address: "Add address",
+                identifier: asset.localIdentifier,
+                latitude: latitude,
+                longitude: longitude,
+                date: date
+            )
+
+            self.map.locations.append(location)
+        }
+    }
     
     @objc func addPhotosButtonTapped(_ sender: AnyObject?) {
         openPicker()
@@ -114,12 +142,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     // finished picking images
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-        
-        // add selected photos to map
-        if withPHAssets.count > 0 {
-            self.map.locations.append(Location.init(name: "Yo", address: "", imageRef: "", latitude: 0.0, longitude: 0.0, dateTime: Date()))
-        }
-        print(withPHAssets)
+        addPhotosToMap(assets: withPHAssets)
         goBackToAccessPromptIfNewUserDidNotSelectPhotos(withPHAssets)
     }
     

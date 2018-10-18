@@ -8,7 +8,22 @@
 
 import Foundation
 
-struct Map {
+struct Map: Codable {
     let name: String
     var locations: [Location]
+    
+    
+    // ==========================
+    // FUNCTIONS
+    
+    func toJson() -> String {
+        let encoder = JSONEncoder()
+        do {
+            let jsonData = try encoder.encode(self)
+            return String(data: jsonData, encoding: .utf8)!
+        } catch {
+            print("error decoding")
+        }
+        return "{}"
+    }
 }
