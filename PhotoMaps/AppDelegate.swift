@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,8 +17,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        let userMaps = false
+        
+        // DEFINE WHICH VIEW CONTROLLER IS ROOT
+        let rootVC: UIViewController = {
+            var vc = UIViewController()
+            
+            // Check if user has maps
+            if (userMaps) {
+                print("user has maps")
+                vc = MapListViewController()
+            } else {
+                // Check if user allowed access to photo library
+                switch PHPhotoLibrary.authorizationStatus() {
+                case .denied, .restricted:
+                    print("access denied or restricted")
+                    vc = NoAccessViewController()
+                default:
+                    // if access is granted but user has no maps should still show
+                    // prompt view as a explainer of what they're supposed to do
+                    print("access granted or not determined")
+                    vc = AccessPromptViewController()
+                }
+            }
+            return vc
+        }()
+        
+        // LOAD ROOT VIEW CONTROLLER IN NAVIGATION CONTROLLER
         window = UIWindow()
-        window?.rootViewController = UINavigationController(rootViewController: InitialViewController())
+        window?.rootViewController = UINavigationController(rootViewController: rootVC)
         window?.makeKeyAndVisible()
         
         return true

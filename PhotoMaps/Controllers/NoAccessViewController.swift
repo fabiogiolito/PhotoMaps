@@ -1,38 +1,27 @@
 //
-//  InitialViewController.swift
+//  NoAccessViewController.swift
 //  PhotoMaps
 //
-//  Created by Fabio Giolito on 17/10/2018.
+//  Created by Fabio Giolito on 18/10/2018.
 //  Copyright © 2018 Fabio Giolito. All rights reserved.
 //
 
 import UIKit
-import Photos
-import TLPhotoPicker
 
-class InitialViewController: UIViewController, TLPhotosPickerViewControllerDelegate {
+class NoAccessViewController: UIViewController {
     
     // =========================================
     // SUBVIEWS
 
     let image: UIImageView = {
-        let img = UIImageView(image: UIImage(named: "map_illustration"))
+        let img = UIImageView(image: UIImage(named: "map_lost"))
         img.anchorSquare(ratio: 0.8)
         return img
     }()
     
-    let appNameLabel: UILabel = {
+    let bodyLabel: UILabel = {
         let label = UILabel()
-        label.text = "PhotoMap"
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 40)
-        label.font = UIFont.systemFont(ofSize: 40, weight: .heavy)
-        return label
-    }()
-    
-    let featureListLabel: UILabel = {
-        let label = UILabel()
-        label.text = "View your photos on a map \nRetrace your steps \nCreate photo guides"
+        label.text = "The app needs access to your photo library so you can see your photos on a map."
         label.numberOfLines = 0
         label.textAlignment = .center
         label.setLineHeight(lineHeight: 10)
@@ -41,7 +30,7 @@ class InitialViewController: UIViewController, TLPhotosPickerViewControllerDeleg
     
     let accessButton: UIButton = {
         let btn = UIButton.large()
-        btn.setTitle("Access Photos", for: .normal)
+        btn.setTitle("Open Settings", for: .normal)
         btn.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
         return btn
     }()
@@ -56,7 +45,6 @@ class InitialViewController: UIViewController, TLPhotosPickerViewControllerDeleg
         return label
     }()
     
-    
     // =========================================
     // LAYOUT SUBVIEWS
     func layoutSubviews() {
@@ -64,8 +52,8 @@ class InitialViewController: UIViewController, TLPhotosPickerViewControllerDeleg
         let buttonStack = UIStackView(arrangedSubviews: [ accessButton, explainerLabel ])
         buttonStack.axis = .vertical
         buttonStack.spacing = 24
-
-        let stack = UIStackView(arrangedSubviews: [ image, appNameLabel, featureListLabel, buttonStack ])
+        
+        let stack = UIStackView(arrangedSubviews: [ image, bodyLabel, buttonStack ])
         stack.axis = .vertical
         stack.distribution = .equalSpacing
         
@@ -76,52 +64,22 @@ class InitialViewController: UIViewController, TLPhotosPickerViewControllerDeleg
     
     // =========================================
     // LIFECYCLE
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set layout basics
+        // Layout
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = true
-        
-        checkPhotosPermission()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         layoutSubviews()
     }
-
-    
-    // =========================================
-    // SETUP FUNCTIONS
-
-    func checkPhotosPermission() {
-    }
-    
-    func goToNextView() {
-    }
-    
     
     // =========================================
     // ACTION FUNCTIONS
-
+    
     @objc func buttonClicked(_ sender: AnyObject?) {
-        
-        let imagePicker = TLPhotosPickerViewController()
-        imagePicker.delegate = self
-        
-        var configure = TLPhotosPickerConfigure()
-        configure.usedCameraButton = false
-        configure.numberOfColumn = 4
-        configure.nibSet = (nibName: "CustomImagePickerCell", bundle: Bundle.main)
-        imagePicker.configure = configure
-        
-        self.present(imagePicker, animated: true, completion: nil)
+        print("button clicked")
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
-
-    // finished picking images
-    func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
-        print(withTLPHAssets)
-    }
-
+    
 }
