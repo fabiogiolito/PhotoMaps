@@ -10,5 +10,5 @@ import Foundation
 
 struct Map {
     let name: String
-    let locations: [Location]
+    var locations: [Location]
 }

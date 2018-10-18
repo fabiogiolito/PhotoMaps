@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     // SAMPLE DATA
     let data: Map = Map.init(name: "Madrid Centro", locations: [
         Location.init(
-            title: "Mercado da Ribeira",
+            name: "Mercado da Ribeira",
             address: "Av. 24 de Julho s/n",
             imageRef: "",
             latitude: 38.707060,
@@ -23,7 +23,7 @@ class ViewController: UIViewController {
             dateTime: Date()
         ),
         Location.init(
-            title: "Praça Luís de Camões",
+            name: "Praça Luís de Camões",
             address: "Largo Luís de Camões",
             imageRef: "",
             latitude: 38.710878,
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
             dateTime: Date()
         ),
         Location.init(
-            title: "Igreja de São Roque",
+            name: "Igreja de São Roque",
             address: "Largo Trindade Coelho",
             imageRef: "",
             latitude: 38.713695,
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
             dateTime: Date()
         ),
         Location.init(
-            title: "Miradouro de São Pedro de Alcântara",
+            name: "Miradouro de São Pedro de Alcântara",
             address: "R. de São Pedro de Alcântara",
             imageRef: "",
             latitude: 38.715432,

@@ -19,8 +19,8 @@
 		DA616D352177CB2200DB331E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D2F2177CB2100DB331E /* TextView.swift */; };
 		DA616D362177CB2200DB331E /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D302177CB2100DB331E /* Font.swift */; };
 		DA616D382177D4D300DB331E /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D372177D4D300DB331E /* Labels.swift */; };
-		DAAC003A2178A5F300EF46A6 /* NewMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC00392178A5F300EF46A6 /* NewMapViewController.swift */; };
-		DAAC003C2178A61D00EF46A6 /* NoAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003B2178A61D00EF46A6 /* NoAccessViewController.swift */; };
+		DAAC003A2178A5F300EF46A6 /* EditMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC00392178A5F300EF46A6 /* EditMapViewController.swift */; };
+		DAAC003C2178A61D00EF46A6 /* AccessDeniedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */; };
 		DAAC003E2178A67000EF46A6 /* MapListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003D2178A67000EF46A6 /* MapListViewController.swift */; };
 		DAAC00402178AF2C00EF46A6 /* Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003F2178AF2C00EF46A6 /* Picker.swift */; };
 		DADC39EE2176203F00BB5AF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */; };
@@ -45,8 +45,8 @@
 		DA616D2F2177CB2100DB331E /* TextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		DA616D302177CB2100DB331E /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		DA616D372177D4D300DB331E /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
-		DAAC00392178A5F300EF46A6 /* NewMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMapViewController.swift; sourceTree = "<group>"; };
-		DAAC003B2178A61D00EF46A6 /* NoAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoAccessViewController.swift; sourceTree = "<group>"; };
+		DAAC00392178A5F300EF46A6 /* EditMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMapViewController.swift; sourceTree = "<group>"; };
+		DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessDeniedViewController.swift; sourceTree = "<group>"; };
 		DAAC003D2178A67000EF46A6 /* MapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListViewController.swift; sourceTree = "<group>"; };
 		DAAC003F2178AF2C00EF46A6 /* Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; };
 		DADC39EA2176203F00BB5AF1 /* PhotoMaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoMaps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,9 +109,9 @@
 			children = (
 				DADC39EF2176203F00BB5AF1 /* ViewController.swift */,
 				DA616D282177A7FB00DB331E /* AccessPromptViewController.swift */,
-				DAAC003B2178A61D00EF46A6 /* NoAccessViewController.swift */,
-				DAAC00392178A5F300EF46A6 /* NewMapViewController.swift */,
+				DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */,
 				DAAC003D2178A67000EF46A6 /* MapListViewController.swift */,
+				DAAC00392178A5F300EF46A6 /* EditMapViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -290,7 +290,7 @@
 				DA616D322177CB2200DB331E /* Buttons.swift in Sources */,
 				DA616D362177CB2200DB331E /* Font.swift in Sources */,
 				DA616D382177D4D300DB331E /* Labels.swift in Sources */,
-				DAAC003A2178A5F300EF46A6 /* NewMapViewController.swift in Sources */,
+				DAAC003A2178A5F300EF46A6 /* EditMapViewController.swift in Sources */,
 				DAAC00402178AF2C00EF46A6 /* Picker.swift in Sources */,
 				DA616D292177A7FB00DB331E /* AccessPromptViewController.swift in Sources */,
 				DA616D312177CB2200DB331E /* Colors.swift in Sources */,
@@ -301,7 +301,7 @@
 				DADC39EE2176203F00BB5AF1 /* AppDelegate.swift in Sources */,
 				DA616D332177CB2200DB331E /* Gradient.swift in Sources */,
 				DA616D352177CB2200DB331E /* TextView.swift in Sources */,
-				DAAC003C2178A61D00EF46A6 /* NoAccessViewController.swift in Sources */,
+				DAAC003C2178A61D00EF46A6 /* AccessDeniedViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

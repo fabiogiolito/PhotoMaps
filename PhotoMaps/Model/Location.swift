@@ -10,8 +10,8 @@ import Foundation
 import MapKit
 
 struct Location {
-    let title: String
-    let address: String
+    var name: String
+    var address: String
     
     let imageRef: String
     
@@ -30,7 +30,7 @@ struct Location {
     func pin() -> MKPointAnnotation {
         let pin = MKPointAnnotation()
         pin.coordinate = coordinate()
-        pin.title = title
+        pin.title = name
         pin.subtitle = address
         return pin
     }

@@ -1,5 +1,5 @@
 //
-//  NoAccessViewController.swift
+//  AccessDeniedViewController.swift
 //  PhotoMaps
 //
 //  Created by Fabio Giolito on 18/10/2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NoAccessViewController: UIViewController {
+class AccessDeniedViewController: UIViewController {
     
     // =========================================
     // SUBVIEWS
@@ -31,7 +31,7 @@ class NoAccessViewController: UIViewController {
     let accessButton: UIButton = {
         let btn = UIButton.large()
         btn.setTitle("Open Settings", for: .normal)
-        btn.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         return btn
     }()
     
@@ -68,16 +68,19 @@ class NoAccessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Layout
-        view.backgroundColor = .white
-        navigationController?.isNavigationBarHidden = true
         layoutSubviews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .white
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     // =========================================
     // ACTION FUNCTIONS
     
-    @objc func buttonClicked(_ sender: AnyObject?) {
+    @objc func buttonTapped(_ sender: AnyObject?) {
         print("button clicked")
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }

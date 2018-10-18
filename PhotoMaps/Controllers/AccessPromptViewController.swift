@@ -40,7 +40,7 @@ class AccessPromptViewController: UIViewController {
     let accessButton: UIButton = {
         let btn = UIButton.large()
         btn.setTitle("Access Photos", for: .normal)
-        btn.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         return btn
     }()
     
@@ -77,18 +77,21 @@ class AccessPromptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Layout
-        view.backgroundColor = .white
-        navigationController?.isNavigationBarHidden = true
         layoutSubviews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .white
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
     
     // =========================================
     // ACTION FUNCTIONS
 
-    @objc func buttonClicked(_ sender: AnyObject?) {
-        present(NewMapViewController(), animated: true, completion: nil)
+    @objc func buttonTapped(_ sender: AnyObject?) {
+        present(UINavigationController(rootViewController: MapListViewController()), animated: true, completion: nil)
     }
 
 }

@@ -29,7 +29,7 @@ extension UITextView {
             for hashtag in array {
 
                 let hashtagRange = (attrString.string as NSString).range(of: hashtag)
-                let hashtagString = String(hashtag.characters.dropFirst())
+                let hashtagString = String(hashtag.dropFirst())
 
                 print(hashtagString)
                 attrString.addAttribute(.link, value: "https://weheartit.com/pictures/\(hashtagString)", range: hashtagRange)

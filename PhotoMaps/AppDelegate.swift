@@ -17,14 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let userMaps = false
+        let userMaps = true
         
         // DEFINE WHICH VIEW CONTROLLER IS ROOT
         let rootVC: UIViewController = {
-            var vc = UIViewController()
+            var vc: UIViewController
             
             // Check if user has maps
-            if (userMaps) {
+            if userMaps {
                 print("user has maps")
                 vc = MapListViewController()
             } else {
@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 switch PHPhotoLibrary.authorizationStatus() {
                 case .denied, .restricted:
                     print("access denied or restricted")
-                    vc = NoAccessViewController()
+                    vc = AccessDeniedViewController()
                 default:
                     // if access is granted but user has no maps should still show
                     // prompt view as a explainer of what they're supposed to do

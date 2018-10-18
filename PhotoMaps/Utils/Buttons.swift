@@ -26,7 +26,7 @@ extension UIButton {
     
     static func large() -> UIButton {
         let button = UIButton.base()
-        button.contentEdgeInsets = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
+        button.contentEdgeInsets = UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.backgroundColor = UIColor.primary()
         button.tintColor = .white
