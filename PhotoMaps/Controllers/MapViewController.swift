@@ -16,12 +16,34 @@ class MapViewController: UIViewController {
     
     var map: Map!
     
+    enum DragOptions: CGFloat {
+        case limit = -300
+        case maximized = -250
+        case minimized = 0
+    }
+    
+    var currentTranslation: CGFloat = 0
+    
     // =========================================
     // SUBVIEWS
     
     lazy var mapView: MKMapView = {
-        let map = MKMapView(frame: self.view.bounds)
+        let map = MKMapView(frame: view.bounds)
         return map
+    }()
+    
+    lazy var photoStripContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .red
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDragPhotoStrip)))
+        return view
+    }()
+    
+    let blueView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue
+        return view
     }()
 
     
@@ -36,6 +58,12 @@ class MapViewController: UIViewController {
         title = map.name
         
         view.addSubview(mapView)
+        view.addSubview(photoStripContainer)
+        
+        photoStripContainer.anchor(top: view.safeAreaLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: -150, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: view.bounds.height)
+        
+        photoStripContainer.addSubview(blueView)
+        blueView.anchor(top: photoStripContainer.topAnchor, left: photoStripContainer.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: photoStripContainer.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
 
         // Put locations on map and request routes
         for (index, location) in map.locations.enumerated() {
@@ -83,6 +111,52 @@ class MapViewController: UIViewController {
                 self.mapView.addOverlay(route.polyline)
             }
         }
+    }
+    
+    
+    // Drag photo strip animation
+    @objc func handleDragPhotoStrip(gesture: UIPanGestureRecognizer) {
+        
+        // BEGAN DRAGGING
+        if gesture.state == .began {
+            print("Did begin dragging")
+            
+        // IS DRAGGING
+        } else if gesture.state == .changed {
+            
+            // Get Y translation, limit at dragLimit
+            var translation = gesture.translation(in: self.view).y + currentTranslation
+            if translation < DragOptions.limit.rawValue { translation = DragOptions.limit.rawValue }
+            
+            print("is dragging: ", translation)
+            
+            // Apply translation
+            photoStripContainer.transform = CGAffineTransform(translationX: 0, y: translation)
+            
+        // ENDED DRAGGING
+        } else if gesture.state == .ended {
+            
+            // Get Y translation, limit at dragLimit
+            var translation = gesture.translation(in: self.photoStripContainer).y + currentTranslation
+            if translation < DragOptions.limit.rawValue { translation = DragOptions.limit.rawValue }
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+
+                // Stay at maximized position
+                if translation < DragOptions.limit.rawValue / 2 {
+                    self.photoStripContainer.transform = CGAffineTransform(translationX: 0, y: DragOptions.maximized.rawValue)
+                    self.currentTranslation = DragOptions.maximized.rawValue
+
+                // Go back to minimized position
+                } else {
+                    self.photoStripContainer.transform = CGAffineTransform(translationX: 0, y: DragOptions.minimized.rawValue)
+                    self.currentTranslation = DragOptions.minimized.rawValue
+                }
+                
+                print(self.currentTranslation)
+            })
+        }
+        
     }
 }
 
