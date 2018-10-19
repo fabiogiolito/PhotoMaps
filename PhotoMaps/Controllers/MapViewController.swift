@@ -18,8 +18,9 @@ class MapViewController: UIViewController {
     
     // Options for photo strip drag animation
     enum DragOptions: CGFloat {
-        case limit = -450
-        case maximized = -400
+        case maxLimit = -400
+        case minLimit = -140
+        case maximized = -350
         case minimized = -150
     }
     var photoStripTopConstraint: NSLayoutConstraint?
@@ -47,11 +48,13 @@ class MapViewController: UIViewController {
         return view
     }()
     
-    let photoStripCollectionView: PhotoStripCollectionView = {
+    lazy var photoStripCollectionView: PhotoStripCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         let view = PhotoStripCollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)
+        view.isPagingEnabled = true
+        view.map = self.map
         return view
     }()
     
@@ -138,23 +141,31 @@ class MapViewController: UIViewController {
             
             // Get Y translation, limit at dragLimit
             var translation = gesture.translation(in: self.view).y + photoStripTopConstraintInitialConstant
-            if translation < DragOptions.limit.rawValue { translation = DragOptions.limit.rawValue }
+            if translation < DragOptions.maxLimit.rawValue { translation = DragOptions.maxLimit.rawValue }
+            if translation > DragOptions.minLimit.rawValue { translation = DragOptions.minLimit.rawValue }
             
             // Apply translation
             photoStripTopConstraint?.constant = translation
+            self.photoStripCollectionView.setNeedsLayout()
+            self.photoStripCollectionView.collectionViewLayout.invalidateLayout()
             
         // ENDED DRAGGING
         } else if gesture.state == .ended {
             
             // Get Y translation, limit at dragLimit
             var translation = gesture.translation(in: self.photoStripContainer).y + photoStripTopConstraintInitialConstant
-            if translation < DragOptions.limit.rawValue { translation = DragOptions.limit.rawValue }
+            if translation < DragOptions.maxLimit.rawValue { translation = DragOptions.maxLimit.rawValue }
+            if translation > DragOptions.minLimit.rawValue { translation = DragOptions.minLimit.rawValue }
+            
+            // Get gesture velocity
+            let velocity = gesture.velocity(in: self.photoStripContainer).y
+            print("velocity: ", velocity)
 
             // Setup final positions
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
 
                 // Stay at maximized position
-                if translation < DragOptions.limit.rawValue / 2 {
+                if translation < DragOptions.maxLimit.rawValue / 2 || velocity < -500 {
                     self.photoStripTopConstraint?.constant = DragOptions.maximized.rawValue
                     self.photoStripTopConstraintInitialConstant = DragOptions.maximized.rawValue
                     
@@ -166,6 +177,7 @@ class MapViewController: UIViewController {
                 
                 // Animate
                 self.view.layoutIfNeeded()
+                self.photoStripCollectionView.collectionViewLayout.invalidateLayout()
             })
         }
     }

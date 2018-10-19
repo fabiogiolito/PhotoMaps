@@ -11,6 +11,11 @@ import UIKit
 class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     // =========================================
+    // MODEL
+    
+    var map: Map!
+    
+    // =========================================
     // INITIALIZERS
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -39,12 +44,15 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     // COLLECTION VIEW FUNCTIONS
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return map.locations.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let location = map.locations[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)
-        cell.backgroundColor = .red
+        cell.backgroundView = UIImageView(image: location.image)
+        cell.backgroundView?.contentMode = .scaleAspectFill
+        cell.clipsToBounds = true
         return cell
     }
 

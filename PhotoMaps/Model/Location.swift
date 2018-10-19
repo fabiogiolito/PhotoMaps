@@ -56,7 +56,7 @@ struct Location: Codable {
     
     var image: UIImage {
         get {
-            return UIImage.fromAsset(photoAsset)
+            return UIImage.fromAsset(photoAsset, size: 400)
         }
     }
     

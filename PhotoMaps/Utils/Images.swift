@@ -20,7 +20,9 @@ extension UIImage {
         let option = PHImageRequestOptions()
         option.isSynchronous = true
         manager.requestImage(for: asset, targetSize: CGSize(width: size, height: size), contentMode: .aspectFill, options: option) { (result, info) in
-            image = result!
+            if let result = result {
+                image = result
+            }
         }
         return image
     }
