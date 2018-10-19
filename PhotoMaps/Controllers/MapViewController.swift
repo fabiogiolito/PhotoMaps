@@ -17,12 +17,14 @@ class MapViewController: UIViewController {
     var map: Map!
     
     enum DragOptions: CGFloat {
-        case limit = -300
-        case maximized = -250
-        case minimized = 0
+        case limit = -450
+        case maximized = -400
+        case minimized = -150
     }
     
-    var currentTranslation: CGFloat = 0
+    var stripTopConstraint: NSLayoutConstraint?
+    
+    var currentTranslation: CGFloat = DragOptions.minimized.rawValue
     
     // =========================================
     // SUBVIEWS
@@ -60,7 +62,10 @@ class MapViewController: UIViewController {
         view.addSubview(mapView)
         view.addSubview(photoStripContainer)
         
-        photoStripContainer.anchor(top: view.safeAreaLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: -150, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: view.bounds.height)
+        photoStripContainer.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: view.bounds.height)
+        
+        stripTopConstraint = photoStripContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: DragOptions.minimized.rawValue)
+        stripTopConstraint?.isActive = true
         
         photoStripContainer.addSubview(blueView)
         blueView.anchor(top: photoStripContainer.topAnchor, left: photoStripContainer.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: photoStripContainer.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
@@ -87,7 +92,7 @@ class MapViewController: UIViewController {
         
         mapView.delegate = self
     }
-    
+
     
     // =========================================
     // ACTION FUNCTIONS
@@ -131,7 +136,8 @@ class MapViewController: UIViewController {
             print("is dragging: ", translation)
             
             // Apply translation
-            photoStripContainer.transform = CGAffineTransform(translationX: 0, y: translation)
+            // photoStripContainer.transform = CGAffineTransform(translationX: 0, y: translation)
+            stripTopConstraint?.constant = translation
             
         // ENDED DRAGGING
         } else if gesture.state == .ended {
@@ -140,20 +146,25 @@ class MapViewController: UIViewController {
             var translation = gesture.translation(in: self.photoStripContainer).y + currentTranslation
             if translation < DragOptions.limit.rawValue { translation = DragOptions.limit.rawValue }
             
+            
+            
+            print("ended at: ", self.currentTranslation)
+            
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
 
                 // Stay at maximized position
                 if translation < DragOptions.limit.rawValue / 2 {
-                    self.photoStripContainer.transform = CGAffineTransform(translationX: 0, y: DragOptions.maximized.rawValue)
+                    self.stripTopConstraint?.constant = DragOptions.maximized.rawValue
                     self.currentTranslation = DragOptions.maximized.rawValue
-
-                // Go back to minimized position
+                    
+                    // Go back to minimized position
                 } else {
-                    self.photoStripContainer.transform = CGAffineTransform(translationX: 0, y: DragOptions.minimized.rawValue)
+                    self.stripTopConstraint?.constant = DragOptions.minimized.rawValue
                     self.currentTranslation = DragOptions.minimized.rawValue
                 }
                 
-                print(self.currentTranslation)
+                self.view.layoutIfNeeded()
+                
             })
         }
         
