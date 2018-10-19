@@ -16,6 +16,13 @@ class MapViewController: UIViewController {
     
     var map: Map!
     
+    var visibleAnnotations: [MKAnnotation]? {
+        didSet {
+            guard let annotations = visibleAnnotations else { return }
+            mapView.showAnnotations(annotations, animated: true)
+        }
+    }
+    
     // Options for photo strip drag animation
     enum DragOptions: CGFloat {
         case maxLimit = -400
@@ -36,7 +43,7 @@ class MapViewController: UIViewController {
     }()
 
     lazy var mapView: MKMapView = {
-        let map = MKMapView(frame: view.bounds)
+        let map = MKMapView()
         return map
     }()
     
@@ -76,6 +83,8 @@ class MapViewController: UIViewController {
         view.addSubview(mapView)
         view.addSubview(photoStripContainer)
         
+        mapView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: photoStripContainer.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         photoStripContainer.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: view.bounds.height)
         
         photoStripTopConstraint = photoStripContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: DragOptions.minimized.rawValue)
@@ -93,7 +102,7 @@ class MapViewController: UIViewController {
         }
         
         // Zoom to fit annotations
-        mapView.showAnnotations(mapView.annotations, animated: true)
+        visibleAnnotations = mapView.annotations
     }
     
     // =========================================
@@ -112,6 +121,9 @@ class MapViewController: UIViewController {
     // Tapped "more" button on navbar
     @objc func navbarOptionsButtonTapped(_ sender: AnyObject?) {
         print("navbar options button tapped")
+        if let annotation = mapView.annotations.randomElement() {
+            visibleAnnotations = [annotation]
+        }
     }
     
     // Request route
