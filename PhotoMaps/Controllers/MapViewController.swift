@@ -25,9 +25,15 @@ class MapViewController: UIViewController {
     var photoStripTopConstraint: NSLayoutConstraint?
     var photoStripTopConstraintInitialConstant: CGFloat = DragOptions.minimized.rawValue
     
+    
     // =========================================
     // SUBVIEWS
     
+    lazy var navbarOptionsButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.action, target: self, action: #selector(navbarOptionsButtonTapped(_:)))
+        return btn
+    }()
+
     lazy var mapView: MKMapView = {
         let map = MKMapView(frame: view.bounds)
         return map
@@ -35,23 +41,20 @@ class MapViewController: UIViewController {
     
     lazy var photoStripContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = .red
+        view.backgroundColor = .white
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDragPhotoStrip)))
         return view
     }()
     
-    let photoStripCollectionView: UICollectionView = {
-        let view = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: UICollectionViewFlowLayout())
-        view.backgroundColor = .blue
+    let photoStripCollectionView: PhotoStripCollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        let view = PhotoStripCollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)
         return view
     }()
     
-    lazy var navbarOptionsButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.action, target: self, action: #selector(navbarOptionsButtonTapped(_:)))
-        return btn
-    }()
-
     
     // =========================================
     // LAYOUT SUBVIEWS
