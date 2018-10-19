@@ -20,8 +20,8 @@ class MapListViewController: UITableViewController {
     // =========================================
     // SUBVIEWS
     
-    lazy var addButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(newMapButtonTapped(_:)))
+    lazy var navbarAddButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(navbarAddButtonTapped(_:)))
         return btn
     }()
     
@@ -32,7 +32,7 @@ class MapListViewController: UITableViewController {
     func layoutSubviews() {
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        navigationItem.rightBarButtonItems = [addButton]
+        navigationItem.rightBarButtonItems = [navbarAddButton]
         navigationItem.leftBarButtonItems = []
         title = "Map List"
     }
@@ -96,7 +96,7 @@ class MapListViewController: UITableViewController {
     // =========================================
     // ACTION FUNCTIONS
 
-    @objc func newMapButtonTapped(_ sender: AnyObject?) {
+    @objc func navbarAddButtonTapped(_ sender: AnyObject?) {
         
         let nextId = userData.maps.count
         let newMap = Map.init(id: nextId, name: "New map \(nextId)", locations: [])

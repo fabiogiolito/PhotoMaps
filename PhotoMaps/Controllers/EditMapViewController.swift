@@ -29,8 +29,8 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     // =========================================
     // SUBVIEWS
     
-    lazy var addButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(addPhotosButtonTapped(_:)))
+    lazy var navbarAddButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(navbarAddButtonTapped(_:)))
         return btn
     }()
     
@@ -40,7 +40,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     func layoutSubviews() {
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        navigationItem.rightBarButtonItems = [addButton]
+        navigationItem.rightBarButtonItems = [navbarAddButton]
         title = "Map"
     }
     
@@ -119,7 +119,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         }
     }
     
-    @objc func addPhotosButtonTapped(_ sender: AnyObject?) {
+    @objc func navbarAddButtonTapped(_ sender: AnyObject?) {
         openPicker()
     }
     

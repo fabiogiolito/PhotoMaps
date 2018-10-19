@@ -16,15 +16,14 @@ class MapViewController: UIViewController {
     
     var map: Map!
     
+    // Options for photo strip drag animation
     enum DragOptions: CGFloat {
         case limit = -450
         case maximized = -400
         case minimized = -150
     }
-    
-    var stripTopConstraint: NSLayoutConstraint?
-    
-    var currentTranslation: CGFloat = DragOptions.minimized.rawValue
+    var photoStripTopConstraint: NSLayoutConstraint?
+    var photoStripTopConstraintInitialConstant: CGFloat = DragOptions.minimized.rawValue
     
     // =========================================
     // SUBVIEWS
@@ -42,10 +41,15 @@ class MapViewController: UIViewController {
         return view
     }()
     
-    let blueView: UIView = {
-        let view = UIView()
+    let photoStripCollectionView: UICollectionView = {
+        let view = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: UICollectionViewFlowLayout())
         view.backgroundColor = .blue
         return view
+    }()
+    
+    lazy var navbarOptionsButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.action, target: self, action: #selector(navbarOptionsButtonTapped(_:)))
+        return btn
     }()
 
     
@@ -53,10 +57,11 @@ class MapViewController: UIViewController {
     // LAYOUT SUBVIEWS
     
     func layoutSubviews() {
+        
+        // Basic layout
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        // navigationItem.rightBarButtonItems = [addButton]
-        // navigationItem.leftBarButtonItems = []
+        navigationItem.rightBarButtonItems = [navbarOptionsButton]
         title = map.name
         
         view.addSubview(mapView)
@@ -64,11 +69,11 @@ class MapViewController: UIViewController {
         
         photoStripContainer.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: view.bounds.height)
         
-        stripTopConstraint = photoStripContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: DragOptions.minimized.rawValue)
-        stripTopConstraint?.isActive = true
+        photoStripTopConstraint = photoStripContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: DragOptions.minimized.rawValue)
+        photoStripTopConstraint?.isActive = true
         
-        photoStripContainer.addSubview(blueView)
-        blueView.anchor(top: photoStripContainer.topAnchor, left: photoStripContainer.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: photoStripContainer.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        photoStripContainer.addSubview(photoStripCollectionView)
+        photoStripCollectionView.anchor(top: photoStripContainer.topAnchor, left: photoStripContainer.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: photoStripContainer.rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
         // Put locations on map and request routes
         for (index, location) in map.locations.enumerated() {
@@ -87,15 +92,18 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         layoutSubviews()
-        
         mapView.delegate = self
     }
 
     
     // =========================================
     // ACTION FUNCTIONS
+    
+    // Tapped "more" button on navbar
+    @objc func navbarOptionsButtonTapped(_ sender: AnyObject?) {
+        print("navbar options button tapped")
+    }
     
     // Request route
     func requestRoute(source: Location, destination: Location) {
@@ -122,52 +130,41 @@ class MapViewController: UIViewController {
     // Drag photo strip animation
     @objc func handleDragPhotoStrip(gesture: UIPanGestureRecognizer) {
         
-        // BEGAN DRAGGING
-        if gesture.state == .began {
-            print("Did begin dragging")
-            
         // IS DRAGGING
-        } else if gesture.state == .changed {
+        if gesture.state == .changed {
             
             // Get Y translation, limit at dragLimit
-            var translation = gesture.translation(in: self.view).y + currentTranslation
+            var translation = gesture.translation(in: self.view).y + photoStripTopConstraintInitialConstant
             if translation < DragOptions.limit.rawValue { translation = DragOptions.limit.rawValue }
             
-            print("is dragging: ", translation)
-            
             // Apply translation
-            // photoStripContainer.transform = CGAffineTransform(translationX: 0, y: translation)
-            stripTopConstraint?.constant = translation
+            photoStripTopConstraint?.constant = translation
             
         // ENDED DRAGGING
         } else if gesture.state == .ended {
             
             // Get Y translation, limit at dragLimit
-            var translation = gesture.translation(in: self.photoStripContainer).y + currentTranslation
+            var translation = gesture.translation(in: self.photoStripContainer).y + photoStripTopConstraintInitialConstant
             if translation < DragOptions.limit.rawValue { translation = DragOptions.limit.rawValue }
-            
-            
-            
-            print("ended at: ", self.currentTranslation)
-            
+
+            // Setup final positions
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
 
                 // Stay at maximized position
                 if translation < DragOptions.limit.rawValue / 2 {
-                    self.stripTopConstraint?.constant = DragOptions.maximized.rawValue
-                    self.currentTranslation = DragOptions.maximized.rawValue
+                    self.photoStripTopConstraint?.constant = DragOptions.maximized.rawValue
+                    self.photoStripTopConstraintInitialConstant = DragOptions.maximized.rawValue
                     
                     // Go back to minimized position
                 } else {
-                    self.stripTopConstraint?.constant = DragOptions.minimized.rawValue
-                    self.currentTranslation = DragOptions.minimized.rawValue
+                    self.photoStripTopConstraint?.constant = DragOptions.minimized.rawValue
+                    self.photoStripTopConstraintInitialConstant = DragOptions.minimized.rawValue
                 }
                 
+                // Animate
                 self.view.layoutIfNeeded()
-                
             })
         }
-        
     }
 }
 
