@@ -45,6 +45,9 @@ class MapViewController: UIViewController {
         view.backgroundColor = .white
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDragPhotoStrip)))
+        view.layer.masksToBounds = false
+        view.layer.shadowOffset = CGSize(width: 0, height: -1)
+        view.layer.shadowOpacity = 0.1
         return view
     }()
     
