@@ -1,0 +1,16 @@
+PODS:
+  - TLPhotoPicker (1.7.4)
+
+DEPENDENCIES:
+  - TLPhotoPicker
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - TLPhotoPicker
+
+SPEC CHECKSUMS:
+  TLPhotoPicker: ced10aa9cdbce11bda2272f919cdace69e964239
+
+PODFILE CHECKSUM: bd85498b08ed87fc3cfbac5cb8cab0f325476129
+
+COCOAPODS: 1.5.3
