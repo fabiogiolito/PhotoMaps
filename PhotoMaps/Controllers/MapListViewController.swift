@@ -28,6 +28,7 @@ class MapListViewController: UITableViewController {
     
     // =========================================
     // LAYOUT SUBVIEWS
+    
     func layoutSubviews() {
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
@@ -86,7 +87,9 @@ class MapListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("open map \(userData.maps[indexPath.row].name)")
+        let mapView = MapViewController()
+        mapView.map = userData.maps[indexPath.row]
+        self.navigationController?.pushViewController(mapView, animated: true)
     }
     
 

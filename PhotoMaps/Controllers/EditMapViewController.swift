@@ -164,10 +164,8 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         // No selection, and map is empty
         if selection.count == 0 && map.locations.count == 0 {
 
-            let userMaps = false
-            
             // Has other maps: Go to MapList
-            if userMaps {
+            if userData.maps.count > 0 {
                 DispatchQueue.main.async {
                     self.navigationController?.pushViewController(MapListViewController(), animated: true)
                 }
