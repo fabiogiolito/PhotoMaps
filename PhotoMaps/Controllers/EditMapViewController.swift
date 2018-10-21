@@ -55,7 +55,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: locationItemCellId)
         
         // If map is empty, open picker automatically
-        // autoOpenPickerIfMapIsEmpty()
+         autoOpenPickerIfMapIsEmpty()
     }
     
 
@@ -150,32 +150,6 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     // finished picking images
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
         addPhotosToMap(assets: withPHAssets)
-        goBackToAccessPromptIfNewUserDidNotSelectPhotos(withPHAssets)
-    }
-    
-    // canceled picker
-    func photoPickerDidCancel() {
-        goBackToAccessPromptIfNewUserDidNotSelectPhotos()
-    }
-    
-    // check if didn't select anything or canceled
-    func goBackToAccessPromptIfNewUserDidNotSelectPhotos(_ selection: [PHAsset] = []) {
-        // No selection, and map is empty
-        if selection.count == 0 && map.locations.count == 0 {
-
-            // Has other maps: Go to MapList
-            if userData.maps.count > 0 {
-                DispatchQueue.main.async {
-                    self.navigationController?.pushViewController(MapListViewController(), animated: true)
-                }
-
-            // No maps: Go to AccessPrompt
-            } else {
-                DispatchQueue.main.async {
-                    self.navigationController?.pushViewController(AccessPromptViewController(), animated: true)
-                }
-            }
-        }
     }
 
 }

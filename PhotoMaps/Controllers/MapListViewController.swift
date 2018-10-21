@@ -13,16 +13,28 @@ class MapListViewController: UITableViewController {
     // =========================================
     // MODEL
     
-    var userData: UserData!
+    var userData: UserData! {
+        didSet {
+            showEmptyStateIfNoMaps()
+        }
+    }
     
-    let mapListItemCellId = "MapListItem"
+    enum CellIdentifier: String {
+        case mapListItem
+    }
     
     // =========================================
     // SUBVIEWS
     
-    lazy var navbarAddButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(navbarAddButtonTapped(_:)))
+    lazy var newMapButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(newMapButtonTapped(_:)))
         return btn
+    }()
+    
+    lazy var emptyStateView: UIView = {
+        let empty = UIView(frame: self.view.frame)
+        empty.backgroundColor = .red
+        return empty
     }()
     
     
@@ -32,11 +44,10 @@ class MapListViewController: UITableViewController {
     func layoutSubviews() {
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        navigationItem.rightBarButtonItems = [navbarAddButton]
+        navigationItem.rightBarButtonItems = [newMapButton]
         navigationItem.leftBarButtonItems = []
         title = "Map List"
     }
-    
     
     // =========================================
     // LIFECYCLE
@@ -47,52 +58,59 @@ class MapListViewController: UITableViewController {
         layoutSubviews()
         
         // Register cells
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: mapListItemCellId)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier.mapListItem.rawValue)
 
-        // If map list is empty, go to new map automatically
-        // autoOpenNewMapIfListIsEmpty()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Load data
+        // Reload data whenever view appears
         userData = UserData.init()
+        showEmptyStateIfNoMaps()
     }
 
 
     // =========================================
     // TABLE VIEW DATA SOURCE
     
+    // Number of maps
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userData.maps.count
     }
     
+    // Build cells
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: mapListItemCellId, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.mapListItem.rawValue, for: indexPath)
         cell.textLabel?.text = userData.maps[indexPath.row].name
         cell.accessoryType = .detailButton
         return cell
     }
     
+    // Tapped detail button on map cell
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         let editMapController = EditMapViewController()
         editMapController.map = userData.maps[indexPath.row]
         navigationController?.pushViewController(editMapController, animated: true)
     }
     
+    // Selected a map
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let mapView = MapViewController()
         mapView.map = userData.maps[indexPath.row]
         self.navigationController?.pushViewController(mapView, animated: true)
     }
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
 
     // =========================================
     // ACTION FUNCTIONS
 
-    @objc func navbarAddButtonTapped(_ sender: AnyObject?) {
-        
+    // Tapped new map button on navbar
+    @objc func newMapButtonTapped(_ sender: AnyObject?) {
         let nextId = userData.maps.count
         let newMap = Map.init(id: nextId, name: "New map \(nextId)", locations: [])
         userData.maps.append(newMap)
@@ -106,11 +124,12 @@ class MapListViewController: UITableViewController {
         }
     }
     
-    func autoOpenNewMapIfListIsEmpty() {
-        if userData.maps.count == 0 { // list is empty
-            DispatchQueue.main.async {
-                self.navigationController?.pushViewController(EditMapViewController(), animated: true)
-            }
+    // Show empty state
+    func showEmptyStateIfNoMaps() -> Void {
+        if userData.maps.count > 0 {
+            self.tableView.backgroundView = nil
+        } else {
+            self.tableView.backgroundView = emptyStateView
         }
     }
 }
