@@ -28,7 +28,7 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
         case maxLimit = -400
         case minLimit = -140
         case maximized = -350
-        case minimized = -150
+        case minimized = -340 // Should be -150, but disabling minimization for now
     }
     var photoStripTopConstraint: NSLayoutConstraint?
     var photoStripTopConstraintInitialConstant: CGFloat = DragOptions.minimized.rawValue
@@ -51,7 +51,8 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
         let view = UIView()
         view.backgroundColor = .white
         view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDragPhotoStrip)))
+        // Commented out, disabling maximizing collection view for now, animation too choppy
+        // view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDragPhotoStrip)))
         view.layer.masksToBounds = false
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowOpacity = 0.1
@@ -119,6 +120,7 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
                 requestRoute(source: map.locations[index - 1], destination: location)
             }
         }
+        
         // Zoom to fit annotations
         visibleAnnotations = mapView.annotations
     }
@@ -126,9 +128,6 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
     // Tapped "more" button on navbar
     @objc func navbarOptionsButtonTapped(_ sender: AnyObject?) {
         print("navbar options button tapped")
-        if let annotation = mapView.annotations.randomElement() {
-            visibleAnnotations = [annotation]
-        }
     }
     
     // Request route
@@ -179,7 +178,6 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
             
             // Get gesture velocity
             let velocity = gesture.velocity(in: self.photoStripContainer).y
-            print("velocity: ", velocity)
 
             // Setup final positions
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
@@ -204,38 +202,21 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
     
     // Recenter map on specific annotation
     func recenterMap(index: Int) {
-//        visibleAnnotations = [mapView.annotations[index]]
+        visibleAnnotations = [map.locations[index].pin]
     }
-    
+
 }
 
 // =========================================
 // MAP VIEW DELEGATE FUNCTIONS
 extension MapViewController: MKMapViewDelegate {
     
+    // Render route line on map
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         renderer.strokeColor = .blue
         renderer.lineWidth = 1
         return renderer
     }
-    
-    //    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-    //        let annotationIdentifier = "pinView"
-    //
-    //        var annotationView: MKAnnotationView?
-    //        if let dequeueAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier) {
-    //            annotationView = dequeueAnnotationView
-    //            annotationView?.annotation = annotation
-    //        } else {
-    //            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
-    //        }
-    //
-    //        if let annotationView = annotationView {
-    ////            annotationView.canShowCallout = true
-    //        }
-    //
-    //        return annotationView
-    //
-    //    }
+
 }
