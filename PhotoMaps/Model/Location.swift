@@ -48,8 +48,6 @@ struct Location: Codable {
             let pin = MKPointAnnotation()
             guard let coordinate = coordinate else { return pin }
             pin.coordinate = coordinate
-            pin.title = name
-            pin.subtitle = address
             return pin
         }
     }

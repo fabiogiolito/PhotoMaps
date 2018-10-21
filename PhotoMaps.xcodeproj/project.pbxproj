@@ -28,7 +28,6 @@
 		DAAC0048217936FB00EF46A6 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC0047217936FB00EF46A6 /* UserData.swift */; };
 		DAAC004A217A153600EF46A6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC0049217A153600EF46A6 /* MapViewController.swift */; };
 		DADC39EE2176203F00BB5AF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */; };
-		DADC39F02176203F00BB5AF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC39EF2176203F00BB5AF1 /* ViewController.swift */; };
 		DADC39F32176203F00BB5AF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DADC39F12176203F00BB5AF1 /* Main.storyboard */; };
 		DADC39F52176204000BB5AF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DADC39F42176204000BB5AF1 /* Assets.xcassets */; };
 		DADC39F82176204000BB5AF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DADC39F62176204000BB5AF1 /* LaunchScreen.storyboard */; };
@@ -59,7 +58,6 @@
 		DAAC0049217A153600EF46A6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		DADC39EA2176203F00BB5AF1 /* PhotoMaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoMaps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DADC39EF2176203F00BB5AF1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DADC39F22176203F00BB5AF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DADC39F42176204000BB5AF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DADC39F72176204000BB5AF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 		DA616D272177A7B900DB331E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				DADC39EF2176203F00BB5AF1 /* ViewController.swift */,
 				DA616D282177A7FB00DB331E /* AccessPromptViewController.swift */,
 				DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */,
 				DAAC003D2178A67000EF46A6 /* MapListViewController.swift */,
@@ -310,7 +307,6 @@
 				DA616D292177A7FB00DB331E /* AccessPromptViewController.swift in Sources */,
 				DA616D312177CB2200DB331E /* Colors.swift in Sources */,
 				DAAC0048217936FB00EF46A6 /* UserData.swift in Sources */,
-				DADC39F02176203F00BB5AF1 /* ViewController.swift in Sources */,
 				DA616D2421777C0300DB331E /* Map.swift in Sources */,
 				DA616D342177CB2200DB331E /* Layout.swift in Sources */,
 				DA616D2621777C1700DB331E /* Location.swift in Sources */,

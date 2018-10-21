@@ -59,12 +59,7 @@ class MapListViewController: UITableViewController {
         // Load data
         userData = UserData.init()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("data is: ", userData)
-    }
-    
+
 
     // =========================================
     // TABLE VIEW DATA SOURCE

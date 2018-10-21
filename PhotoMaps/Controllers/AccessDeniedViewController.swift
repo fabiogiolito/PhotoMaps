@@ -28,10 +28,10 @@ class AccessDeniedViewController: UIViewController {
         return label
     }()
     
-    let accessButton: UIButton = {
+    let openSettingsButton: UIButton = {
         let btn = UIButton.large()
         btn.setTitle("Open Settings", for: .normal)
-        btn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(openSettingsButtonTapped(_:)), for: .touchUpInside)
         return btn
     }()
     
@@ -49,7 +49,7 @@ class AccessDeniedViewController: UIViewController {
     // LAYOUT SUBVIEWS
     func layoutSubviews() {
         
-        let buttonStack = UIStackView(arrangedSubviews: [ accessButton, explainerLabel ])
+        let buttonStack = UIStackView(arrangedSubviews: [ openSettingsButton, explainerLabel ])
         buttonStack.axis = .vertical
         buttonStack.spacing = 24
         
@@ -80,8 +80,7 @@ class AccessDeniedViewController: UIViewController {
     // =========================================
     // ACTION FUNCTIONS
     
-    @objc func buttonTapped(_ sender: AnyObject?) {
-        print("button clicked")
+    @objc func openSettingsButtonTapped(_ sender: AnyObject?) {
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
     

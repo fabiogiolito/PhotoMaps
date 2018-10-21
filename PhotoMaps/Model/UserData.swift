@@ -31,8 +31,6 @@ struct UserData: Codable {
             let decoder = JSONDecoder()
             if let decoded = try? decoder.decode(UserData.self, from: userData) {
                 self.maps = decoded.maps
-                
-                print("UserDefaults loaded, ", self)
             }
         }
     }
@@ -53,6 +51,5 @@ struct UserData: Codable {
         if let data = self.toJson() {
             defaults.set(data, forKey: "UserData")
         }
-        print("===== DEFAULTS UPDATED =====")
     }
 }

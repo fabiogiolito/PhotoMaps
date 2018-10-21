@@ -37,10 +37,10 @@ class AccessPromptViewController: UIViewController {
         return label
     }()
     
-    let accessButton: UIButton = {
+    let accessPhotosButton: UIButton = {
         let btn = UIButton.large()
         btn.setTitle("Access Photos", for: .normal)
-        btn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(accessPhotosButtonTapped(_:)), for: .touchUpInside)
         return btn
     }()
     
@@ -59,7 +59,7 @@ class AccessPromptViewController: UIViewController {
     // LAYOUT SUBVIEWS
     func layoutSubviews() {
         
-        let buttonStack = UIStackView(arrangedSubviews: [ accessButton, explainerLabel ])
+        let buttonStack = UIStackView(arrangedSubviews: [ accessPhotosButton, explainerLabel ])
         buttonStack.axis = .vertical
         buttonStack.spacing = 24
 
@@ -90,7 +90,7 @@ class AccessPromptViewController: UIViewController {
     // =========================================
     // ACTION FUNCTIONS
 
-    @objc func buttonTapped(_ sender: AnyObject?) {
+    @objc func accessPhotosButtonTapped(_ sender: AnyObject?) {
         present(UINavigationController(rootViewController: MapListViewController()), animated: true, completion: nil)
     }
 
