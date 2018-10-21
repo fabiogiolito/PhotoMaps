@@ -18,7 +18,6 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     var userData = UserData.init()
     var map: Map! {
         didSet {
-            print("-- map updated --")
             userData.maps[map.id] = map
             tableView.reloadData()
         }
@@ -59,11 +58,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         // autoOpenPickerIfMapIsEmpty()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("locations in map: ", map.locations.count)
-    }
-    
+
     // =========================================
     // TABLE VIEW DATA SOURCE
     
@@ -92,7 +87,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected row")
+        print("selected image, should allow to edit title, address…")
     }
     
     
@@ -106,6 +101,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
             guard let longitude = asset.location?.coordinate.longitude else { return }
             guard let date = asset.creationDate else { return }
             
+            // Create new location
             let location = Location.init(
                 name: "New location",
                 address: "Add address",
@@ -115,7 +111,11 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
                 date: date
             )
 
-            self.map.locations.append(location)
+            // Update data
+            var locations = self.map.locations // get current locatiosn
+            locations.append(location) // append new location
+            let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
+            self.map.locations = sortedLocations // update map locations with sorted list
         }
     }
     
@@ -155,7 +155,6 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     // canceled picker
     func photoPickerDidCancel() {
-        print("canceled")
         goBackToAccessPromptIfNewUserDidNotSelectPhotos()
     }
     
