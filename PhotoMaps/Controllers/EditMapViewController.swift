@@ -20,10 +20,20 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         didSet {
             userData.maps[map.id] = map
             tableView.reloadData()
+            showEmptyStateIfNoLocations()
         }
     }
     
-    let locationItemCellId = "LocationItem"
+    enum Section: Int {
+        case attributes = 0
+        case locations
+        static let count = 2
+    }
+    
+    enum CellIdentifier: String {
+        case locationItem
+    }
+
     
     // =========================================
     // SUBVIEWS
@@ -31,6 +41,12 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     lazy var navbarAddButton: UIBarButtonItem = {
         let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(navbarAddButtonTapped(_:)))
         return btn
+    }()
+    
+    lazy var emptyStateView: UIView = {
+        let empty = UIView(frame: self.view.frame)
+        empty.backgroundColor = .red
+        return empty
     }()
     
     
@@ -52,7 +68,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         layoutSubviews()
         
         // Register cells
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: locationItemCellId)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier.locationItem.rawValue)
         
         // If map is empty, open picker automatically
          autoOpenPickerIfMapIsEmpty()
@@ -62,74 +78,71 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     // =========================================
     // TABLE VIEW DATA SOURCE
     
+    // Number of sections
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return Section.count
     }
     
+    // Number of cells
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
+        switch Section(rawValue: section)! {
+        case .attributes:
+            return 1
+        case .locations:
             return map.locations.count
         }
-        return 1
     }
     
+    // Provide a footer view to remove placeholder lines on tableview
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    // Build cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: locationItemCellId, for: indexPath)
+        switch Section(rawValue: indexPath.section)! {
+        case .attributes:
+            let cell = UITableViewCell()
+            cell.textLabel?.text = map.name
+            return cell
+        
+        case .locations:
+            let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.locationItem.rawValue, for: indexPath)
             let location = map.locations[indexPath.row]
             cell.textLabel?.text = location.name
             cell.imageView?.image = location.image
             return cell
         }
-        let cell = UITableViewCell()
-        cell.textLabel?.text = map.name
-        return cell
     }
     
+    // Selected cell
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected image, should allow to edit title, address…")
+        switch Section(rawValue: indexPath.section)! {
+        case .attributes:
+            print("selected attribute")
+            
+        case .locations:
+            print("selected image")
+        }
     }
     
     
     // =========================================
     // ACTION FUNCTIONS
     
-    func addPhotosToMap(assets: [PHAsset]) {
-        for asset in assets {
-            
-            guard let latitude = asset.location?.coordinate.latitude else { return }
-            guard let longitude = asset.location?.coordinate.longitude else { return }
-            guard let date = asset.creationDate else { return }
-            
-            // Create new location
-            let location = Location.init(
-                name: "New location",
-                address: "Add address",
-                identifier: asset.localIdentifier,
-                latitude: latitude,
-                longitude: longitude,
-                date: date
-            )
-
-            // Update data
-            var locations = self.map.locations // get current locatiosn
-            locations.append(location) // append new location
-            let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
-            self.map.locations = sortedLocations // update map locations with sorted list
-        }
-    }
-    
+    // Tapped button to add photos
     @objc func navbarAddButtonTapped(_ sender: AnyObject?) {
         openPicker()
     }
     
+    // Open image picker if map has no images yet
     func autoOpenPickerIfMapIsEmpty() {
         if map.locations.count == 0 {
             openPicker()
         }
     }
     
-    // request photo library access and open picker
+    // Request photo library access and open picker
     func openPicker() {
         PHPhotoLibrary.requestAuthorization { (status) in
             switch status {
@@ -147,9 +160,43 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         }
     }
     
-    // finished picking images
+    // Finished picking images, add them to map
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
         addPhotosToMap(assets: withPHAssets)
     }
 
+    // Add photos to map
+    func addPhotosToMap(assets: [PHAsset]) {
+        for asset in assets {
+            
+            guard let latitude = asset.location?.coordinate.latitude else { return }
+            guard let longitude = asset.location?.coordinate.longitude else { return }
+            guard let date = asset.creationDate else { return }
+            
+            // Create new location
+            let location = Location.init(
+                name: "New location",
+                address: "Add address",
+                identifier: asset.localIdentifier,
+                latitude: latitude,
+                longitude: longitude,
+                date: date
+            )
+            
+            // Update data
+            var locations = self.map.locations // get current locatiosn
+            locations.append(location) // append new location
+            let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
+            self.map.locations = sortedLocations // update map locations with sorted list
+        }
+    }
+    
+    // Show empty state
+    func showEmptyStateIfNoLocations() -> Void {
+        if map.locations.count > 0 {
+            self.tableView.backgroundView = nil
+        } else {
+            self.tableView.backgroundView = emptyStateView
+        }
+    }
 }

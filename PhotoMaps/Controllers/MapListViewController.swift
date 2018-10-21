@@ -101,6 +101,7 @@ class MapListViewController: UITableViewController {
         self.navigationController?.pushViewController(mapView, animated: true)
     }
     
+    // Provide a footer view to remove placeholder lines on tableview
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
     }
