@@ -38,7 +38,7 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
     // SUBVIEWS
     
     lazy var navbarOptionsButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.action, target: self, action: #selector(navbarOptionsButtonTapped(_:)))
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(navbarOptionsButtonTapped(_:)))
         return btn
     }()
 

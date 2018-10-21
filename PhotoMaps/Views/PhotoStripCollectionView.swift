@@ -13,10 +13,24 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     // =========================================
     // MODEL
     
-    var map: Map!
+    var map: Map! {
+        didSet {
+            showEmptyStateIfNoLocations()
+        }
+    }
     
     // Control map from Collection View actions
     var mapTargetDelegate: CollectionViewMapTarget!
+    
+    // =========================================
+    // SUBVIEWS
+    
+    lazy var emptyStateView: EmptyStateView = {
+        let empty = EmptyStateView(frame: self.frame)
+        empty.titleLabel.text = "No photos"
+        empty.bodyLabel.text = "Tap Edit then add some photos to build your map"
+        return empty
+    }()
     
     // =========================================
     // INITIALIZERS
@@ -41,6 +55,19 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    // =========================================
+    // FUNCTIONS
+    
+    // Empty state
+    func showEmptyStateIfNoLocations() {
+        if map.locations.count > 0 {
+            self.backgroundView = nil
+        } else {
+            self.backgroundView = emptyStateView
+        }
     }
     
     

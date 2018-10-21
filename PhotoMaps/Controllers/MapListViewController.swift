@@ -31,9 +31,10 @@ class MapListViewController: UITableViewController {
         return btn
     }()
     
-    lazy var emptyStateView: UIView = {
-        let empty = UIView(frame: self.view.frame)
-        empty.backgroundColor = .red
+    lazy var emptyStateView: EmptyStateView = {
+        let empty = EmptyStateView(frame: self.view.frame)
+        empty.titleLabel.text = "No maps"
+        empty.bodyLabel.text = "Tap the + button to create your first map"
         return empty
     }()
     
@@ -46,7 +47,7 @@ class MapListViewController: UITableViewController {
         navigationController?.isNavigationBarHidden = false
         navigationItem.rightBarButtonItems = [newMapButton]
         navigationItem.leftBarButtonItems = []
-        title = "Map List"
+        title = "Your maps"
     }
     
     // =========================================

@@ -23,7 +23,6 @@ class AccessPromptViewController: UIViewController {
         let label = UILabel()
         label.text = "PhotoMap"
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 40)
         label.font = UIFont.systemFont(ofSize: 40, weight: .heavy)
         return label
     }()

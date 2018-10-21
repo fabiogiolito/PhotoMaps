@@ -43,9 +43,10 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         return btn
     }()
     
-    lazy var emptyStateView: UIView = {
-        let empty = UIView(frame: self.view.frame)
-        empty.backgroundColor = .red
+    lazy var emptyStateView: EmptyStateView = {
+        let empty = EmptyStateView(frame: self.view.frame)
+        empty.titleLabel.text = "No photos"
+        empty.bodyLabel.text = "Tap the + button to add some photos and build your map"
         return empty
     }()
     
@@ -95,7 +96,13 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     // Provide a footer view to remove placeholder lines on tableview
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+        switch Section(rawValue: section)! {
+        case .attributes:
+            return nil
+            
+        case .locations:
+            return UIView()
+        }
     }
     
     // Build cell

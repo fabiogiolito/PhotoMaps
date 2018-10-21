@@ -53,7 +53,7 @@ class AccessDeniedViewController: UIViewController {
         buttonStack.axis = .vertical
         buttonStack.spacing = 24
         
-        let stack = UIStackView(arrangedSubviews: [ image, bodyLabel, buttonStack ])
+        let stack = UIStackView(arrangedSubviews: [ UIView(), image, bodyLabel, buttonStack ])
         stack.axis = .vertical
         stack.distribution = .equalSpacing
         
