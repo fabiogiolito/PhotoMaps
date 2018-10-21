@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, CollectionViewMapTarget {
     
     // =========================================
     // MODEL
@@ -62,10 +62,9 @@ class MapViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-        let view = PhotoStripCollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)
-        view.isPagingEnabled = true
-        view.map = self.map
-        return view
+        let cv = PhotoStripCollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)
+        cv.map = self.map
+        return cv
     }()
     
     
@@ -82,6 +81,7 @@ class MapViewController: UIViewController {
         
         view.addSubview(mapView)
         view.addSubview(photoStripContainer)
+        photoStripContainer.addSubview(photoStripCollectionView)
         
         mapView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: photoStripContainer.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
@@ -90,19 +90,10 @@ class MapViewController: UIViewController {
         photoStripTopConstraint = photoStripContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: DragOptions.minimized.rawValue)
         photoStripTopConstraint?.isActive = true
         
-        photoStripContainer.addSubview(photoStripCollectionView)
-        photoStripCollectionView.anchor(top: photoStripContainer.topAnchor, left: photoStripContainer.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: photoStripContainer.rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-
-        // Put locations on map and request routes
-        for (index, location) in map.locations.enumerated() {
-            mapView.addAnnotation(location.pin)
-            if index > 0 {
-                requestRoute(source: map.locations[index - 1], destination: location)
-            }
-        }
+        photoStripCollectionView.anchor(top: photoStripContainer.topAnchor, left: photoStripContainer.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: photoStripContainer.rightAnchor, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        // Zoom to fit annotations
-        visibleAnnotations = mapView.annotations
+        photoStripCollectionView.mapTargetDelegate = self
+
     }
     
     // =========================================
@@ -111,12 +102,26 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutSubviews()
+        addLocationsToMap()
         mapView.delegate = self
     }
 
     
     // =========================================
     // ACTION FUNCTIONS
+
+    // Fill map
+    func addLocationsToMap() {
+        // Put locations on map and request routes
+        for (index, location) in map.locations.enumerated() {
+            mapView.addAnnotation(location.pin)
+            if index > 0 {
+                requestRoute(source: map.locations[index - 1], destination: location)
+            }
+        }
+        // Zoom to fit annotations
+        visibleAnnotations = mapView.annotations
+    }
     
     // Tapped "more" button on navbar
     @objc func navbarOptionsButtonTapped(_ sender: AnyObject?) {
@@ -196,6 +201,12 @@ class MapViewController: UIViewController {
             })
         }
     }
+    
+    // Recenter map on specific annotation
+    func recenterMap(index: Int) {
+//        visibleAnnotations = [mapView.annotations[index]]
+    }
+    
 }
 
 // =========================================
