@@ -37,8 +37,8 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
     // =========================================
     // SUBVIEWS
     
-    lazy var navbarOptionsButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(navbarOptionsButtonTapped(_:)))
+    lazy var editMapButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editMapButtonTapped(_:)))
         return btn
     }()
 
@@ -77,7 +77,7 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
         // Basic layout
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        navigationItem.rightBarButtonItems = [navbarOptionsButton]
+        navigationItem.rightBarButtonItems = [editMapButton]
         title = map.name
         
         view.addSubview(mapView)
@@ -126,8 +126,10 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
     }
     
     // Tapped "more" button on navbar
-    @objc func navbarOptionsButtonTapped(_ sender: AnyObject?) {
-        print("navbar options button tapped")
+    @objc func editMapButtonTapped(_ sender: AnyObject?) {
+        let editMapController = EditMapViewController()
+        editMapController.map = map
+        navigationController?.pushViewController(editMapController, animated: true)
     }
     
     // Request route
