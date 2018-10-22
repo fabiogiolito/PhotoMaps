@@ -38,8 +38,13 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     // =========================================
     // SUBVIEWS
     
-    lazy var navbarAddButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(navbarAddButtonTapped(_:)))
+    lazy var addPhotosButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(addPhotosButtonTapped(_:)))
+        return btn
+    }()
+    
+    lazy var previewMapButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(previewMapButtonTapped(_:)))
         return btn
     }()
     
@@ -56,7 +61,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     func layoutSubviews() {
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        navigationItem.rightBarButtonItems = [navbarAddButton]
+        navigationItem.rightBarButtonItems = [previewMapButton, addPhotosButton]
         title = "Map"
     }
     
@@ -138,8 +143,15 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     // ACTION FUNCTIONS
     
     // Tapped button to add photos
-    @objc func navbarAddButtonTapped(_ sender: AnyObject?) {
+    @objc func addPhotosButtonTapped(_ sender: AnyObject?) {
         openPicker()
+    }
+    
+    // Tapped button to preview map
+    @objc func previewMapButtonTapped(_ sender: AnyObject?) {
+        let mapViewController = MapViewController()
+        mapViewController.map = map
+        navigationController?.pushViewController(mapViewController, animated: true)
     }
     
     // Open image picker if map has no images yet
