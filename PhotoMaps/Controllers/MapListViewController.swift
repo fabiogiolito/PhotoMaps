@@ -84,17 +84,19 @@ class MapListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.mapListItem.rawValue, for: indexPath)
         cell.textLabel?.text = userData.maps[indexPath.row].name
-        cell.accessoryType = .detailButton
+        
+        // Accessory button
+        let editButton = UIButton(type: .system)
+        editButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        editButton.setTitle("Edit", for: .normal)
+        editButton.contentHorizontalAlignment = .right
+        editButton.tag = indexPath.row
+        editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
+        cell.accessoryView = editButton
+
         return cell
     }
-    
-    // Tapped detail button on map cell
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        let editMapController = EditMapViewController()
-        editMapController.map = userData.maps[indexPath.row]
-        navigationController?.pushViewController(editMapController, animated: true)
-    }
-    
+
     // Selected a map
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let mapView = MapViewController()
@@ -117,12 +119,18 @@ class MapListViewController: UITableViewController {
         let newMap = Map.init(id: nextId, name: "New map \(nextId)", locations: [])
         userData.maps.append(newMap)
         tableView.reloadData()
-        
-        let editController = EditMapViewController()
-        editController.map = newMap
-        
-        DispatchQueue.main.async {
-            self.navigationController?.pushViewController(editController, animated: true)
+
+        let editMapController = EditMapViewController()
+        editMapController.map = newMap
+        self.navigationController?.pushViewController(editMapController, animated: true)
+    }
+    
+    // Tapped edit button on map
+    @objc func editButtonTapped(_ sender: AnyObject?) {
+        if let index = sender?.tag {
+            let editMapController = EditMapViewController()
+            editMapController.map = userData.maps[index]
+            navigationController?.pushViewController(editMapController, animated: true)
         }
     }
     
