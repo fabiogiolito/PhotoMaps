@@ -30,12 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // Check if user allowed access to photo library
                 switch PHPhotoLibrary.authorizationStatus() {
                 case .denied, .restricted:
-                    print("access denied or restricted")
                     vc = AccessDeniedViewController()
                 default:
                     // if access is granted but user has no maps should still show
                     // prompt view as a explainer of what they're supposed to do
-                    print("access granted or not determined")
                     vc = AccessPromptViewController()
                 }
             }

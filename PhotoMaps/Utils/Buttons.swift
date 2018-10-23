@@ -61,6 +61,14 @@ extension UIButton {
         return button
     }
     
+    static func danger() -> UIButton {
+        let button = UIButton.base()
+        button.backgroundColor = UIColor.danger()
+        button.layer.borderWidth = 0
+        button.tintColor = .white
+        return button
+    }
+    
     static func label(font: UIFont = UIFont.caption()) -> UIButton {
         let button = UIButton.base()
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)

@@ -61,8 +61,8 @@ extension UIView {
         self.anchor(top: referenceAnchor, left: superview?.safeAreaLayoutGuide.leftAnchor, bottom: nil, right: superview?.safeAreaLayoutGuide.rightAnchor, paddingTop: distance, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: height)
     }
 
-    func anchorBottom() {
-        self.anchor(top: nil, left: nil, bottom: superview?.safeAreaLayoutGuide.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+    func anchorBottom(distance: CGFloat = 0) {
+        self.anchor(top: nil, left: nil, bottom: superview?.safeAreaLayoutGuide.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: distance, paddingRight: 0, width: 0, height: 0)
     }
     
     func anchorCenterX(_ anchor: NSLayoutXAxisAnchor) {

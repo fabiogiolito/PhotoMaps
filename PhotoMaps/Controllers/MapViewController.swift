@@ -12,7 +12,7 @@ import TLPhotoPicker
 import Photos
 
 class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerViewControllerDelegate, MKMapViewDelegate {
-    
+
     // =========================================
     // MODEL
     
@@ -25,8 +25,15 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
             title = map.name // update map title on navbar
         }
     }
+    
+    var editingMode: Bool = false {
+        didSet {
+            photoStripCollectionView.reloadData()
+            showHideRenameMapButton()
+        }
+    }
 
-
+    
     // =========================================
     // SUBVIEWS
     
@@ -36,7 +43,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     }()
 
     lazy var editMapButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editMapButtonTapped(_:)))
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped(_:)))
         return btn
     }()
     
@@ -54,6 +61,14 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         alert.addAction(create)
         alert.addAction(cancel)
         return alert
+    }()
+    
+    lazy var renameMapButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Rename Map", for: .normal)
+        btn.backgroundColor = .white
+        btn.addTarget(self, action: #selector(renameButtonTapped(_:)), for: .touchUpInside)
+        return btn
     }()
 
     lazy var mapView: MKMapView = {
@@ -92,6 +107,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         navigationItem.rightBarButtonItems = [addPhotosButton, editMapButton]
         
         view.addSubview(mapView)
+        view.addSubview(renameMapButton)
         view.addSubview(photoStripContainer)
         photoStripContainer.addSubview(photoStripCollectionView)
         
@@ -100,6 +116,10 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         photoStripContainer.anchor(top: view.safeAreaLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: -350, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 350)
         
         photoStripCollectionView.anchor(top: photoStripContainer.topAnchor, left: photoStripContainer.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: photoStripContainer.rightAnchor, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        renameMapButton.anchor(top: photoStripContainer.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        
+        showHideRenameMapButton()
     }
     
     // =========================================
@@ -124,16 +144,29 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     }
     
     // Tapped "more" button on navbar
-    @objc func editMapButtonTapped(_ sender: AnyObject?) {
-        present(editMapPrompt, animated: true)
-        // TODO: instead of presenting prompt, enter edit mode
-        //   - show delete button on photos -> delete photo
-        //   - show button to rename map -> opens prompt
+    @objc func editButtonTapped(_ sender: AnyObject?) {
+        self.editingMode = !editingMode
     }
     
+    // Tapped rename map
+    @objc func renameButtonTapped(_ sender: AnyObject?) {
+        present(editMapPrompt, animated: true)
+    }
+    
+    // Perform name update
     func updateMapName(name: String?) {
         guard let name = name else { return } // Make sure we have a name
         map.name = name // Update map name, triggers save and refresh
+    }
+    
+    func showHideRenameMapButton() {
+        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
+            if self.editingMode {
+                self.renameMapButton.transform = CGAffineTransform(translationX: 0, y: -44)
+            } else {
+                self.renameMapButton.transform = .identity
+            }
+        })
     }
     
     
@@ -263,6 +296,11 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     // Move map to focus on pins
     func focusOnLocationPin(index: Int) -> Void {
         mapView.showAnnotations([map.locations[index].pin], animated: true)
+    }
+    
+    // Deleted photo, so should delete location
+    func deleteLocationFromMap(index: Int) {
+        map.locations.remove(at: index)
     }
 
 }

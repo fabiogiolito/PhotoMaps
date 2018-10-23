@@ -136,7 +136,6 @@ class MapListViewController: UITableViewController {
 
     // Tapped new map button on navbar
     @objc func newMapButtonTapped(_ sender: AnyObject?) {
-        print("Prompt new map name")
         present(newMapPrompt, animated: true)
     }
 

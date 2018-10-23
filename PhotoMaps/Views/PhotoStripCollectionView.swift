@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import TLPhotoPicker
 
-class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PhotoCellDelegate {
     
     // =========================================
     // MODEL
@@ -19,6 +20,11 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
             reloadData()
         }
     }
+
+    enum CellIdentifier: String {
+        case photoCell
+    }
+
     
     // Control map from Collection View actions
     var photoStripDelegate: PhotoStripDelegate!
@@ -32,7 +38,8 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         empty.bodyLabel.text = "Tap Edit then add some photos to build your map"
         return empty
     }()
-    
+
+
     // =========================================
     // INITIALIZERS
     
@@ -40,18 +47,21 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         super.init(frame: frame, collectionViewLayout: layout)
         
         // Set delegates
-        self.delegate = self
-        self.dataSource = self
+        delegate = self
+        dataSource = self
         
         // Background
-        self.backgroundColor = .white
+        backgroundColor = .white
+        clipsToBounds = false
         
         // Hide scroll bars
-        self.showsHorizontalScrollIndicator = false
-        self.showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
         
         // Register cells
-        self.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        register(PhotoStripCell.self, forCellWithReuseIdentifier: CellIdentifier.photoCell.rawValue)
+        
+        allowsMultipleSelection = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -71,6 +81,11 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         }
     }
     
+    // Tapped delete button on photo cell
+    func deletePhotoFromStrip(index: Int) {
+        photoStripDelegate.deleteLocationFromMap(index: index)
+    }
+    
     
     // =========================================
     // COLLECTION VIEW FUNCTIONS
@@ -83,10 +98,11 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     // Build image cell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let location = map.locations[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)
-        cell.backgroundView = UIImageView(image: location.image)
-        cell.backgroundView?.contentMode = .scaleAspectFill
-        cell.clipsToBounds = true
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellIdentifier.photoCell.rawValue, for: indexPath) as! PhotoStripCell
+        cell.imageView.image = location.image
+        cell.delegate = self
+        cell.deleteButton.isHidden = !self.photoStripDelegate.editingMode
+        cell.deleteButton.tag = indexPath.row
         return cell
     }
 
@@ -135,5 +151,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
 
 // PROTOCOL
 protocol PhotoStripDelegate {
+    var editingMode: Bool { get set }
     func focusOnLocationPin(index: Int) -> Void
+    func deleteLocationFromMap(index: Int) -> Void
 }

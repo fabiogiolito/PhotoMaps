@@ -28,6 +28,7 @@
 		DAAC0048217936FB00EF46A6 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC0047217936FB00EF46A6 /* UserData.swift */; };
 		DAAC004A217A153600EF46A6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC0049217A153600EF46A6 /* MapViewController.swift */; };
 		DAAF2354217F79FE00D12A4F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAF2353217F79FE00D12A4F /* String.swift */; };
+		DACDF301217F95E000F7708B /* PhotoStripCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACDF300217F95E000F7708B /* PhotoStripCell.swift */; };
 		DADC39EE2176203F00BB5AF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */; };
 		DADC39F32176203F00BB5AF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DADC39F12176203F00BB5AF1 /* Main.storyboard */; };
 		DADC39F52176204000BB5AF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DADC39F42176204000BB5AF1 /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		DAAC0047217936FB00EF46A6 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		DAAC0049217A153600EF46A6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		DAAF2353217F79FE00D12A4F /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		DACDF300217F95E000F7708B /* PhotoStripCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStripCell.swift; sourceTree = "<group>"; };
 		DADC39EA2176203F00BB5AF1 /* PhotoMaps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoMaps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADC39ED2176203F00BB5AF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DADC39F22176203F00BB5AF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			children = (
 				DA4EF820217809B80028B41D /* CustomImagePickerCell.xib */,
 				DAA04A61217A52160039E2E1 /* PhotoStripCollectionView.swift */,
+				DACDF300217F95E000F7708B /* PhotoStripCell.swift */,
 				DA851F17217CF07800C770F4 /* EmptyStateView.swift */,
 			);
 			path = Views;
@@ -308,6 +311,7 @@
 				DA616D382177D4D300DB331E /* Labels.swift in Sources */,
 				DAAC00402178AF2C00EF46A6 /* Picker.swift in Sources */,
 				DAAC004A217A153600EF46A6 /* MapViewController.swift in Sources */,
+				DACDF301217F95E000F7708B /* PhotoStripCell.swift in Sources */,
 				DA616D292177A7FB00DB331E /* AccessPromptViewController.swift in Sources */,
 				DA616D312177CB2200DB331E /* Colors.swift in Sources */,
 				DAAC0048217936FB00EF46A6 /* UserData.swift in Sources */,

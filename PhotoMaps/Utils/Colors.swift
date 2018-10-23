@@ -36,6 +36,10 @@ extension UIColor {
         return UIColor(white: 0, alpha: 0.5)
     }
     
+    static func danger() -> UIColor {
+        return UIColor.rgb(red: 204, green: 31, blue: 26)
+    }
+    
     
     // Color helpers
     
