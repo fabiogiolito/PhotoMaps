@@ -12,7 +12,7 @@ import MapKit
 struct Map: Codable {
     
     let id: Int
-    let name: String
+    var name: String
     var locations: [Location]
     
     

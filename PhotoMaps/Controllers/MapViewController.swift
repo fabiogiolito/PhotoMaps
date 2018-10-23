@@ -22,6 +22,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
             userData.maps[map.id] = map // update data
             photoStripCollectionView.map = map // update photo strip
             loadDataOnMap() // update map
+            title = map.name // update map title on navbar
         }
     }
 
@@ -37,6 +38,22 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     lazy var editMapButton: UIBarButtonItem = {
         let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editMapButtonTapped(_:)))
         return btn
+    }()
+    
+    lazy var editMapPrompt: UIAlertController = {
+        let alert = UIAlertController(title: "Map Name", message: nil, preferredStyle: .alert)
+        let create = UIAlertAction(title: "Save", style: .default, handler: { (_) in
+            guard let mapNameField = alert.textFields?[0] else { return }
+            self.updateMapName(name: mapNameField.text)
+        })
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addTextField(configurationHandler: { (textField) in
+            textField.placeholder = "your map name…"
+            textField.text = self.map.name
+        })
+        alert.addAction(create)
+        alert.addAction(cancel)
+        return alert
     }()
 
     lazy var mapView: MKMapView = {
@@ -73,7 +90,6 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
         navigationItem.rightBarButtonItems = [addPhotosButton, editMapButton]
-        title = map.name
         
         view.addSubview(mapView)
         view.addSubview(photoStripContainer)
@@ -109,10 +125,15 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     
     // Tapped "more" button on navbar
     @objc func editMapButtonTapped(_ sender: AnyObject?) {
-        print("edit map name or delete images")
-//        let editMapController = EditMapViewController()
-//        editMapController.map = map
-//        navigationController?.pushViewController(editMapController, animated: true)
+        present(editMapPrompt, animated: true)
+        // TODO: instead of presenting prompt, enter edit mode
+        //   - show delete button on photos -> delete photo
+        //   - show button to rename map -> opens prompt
+    }
+    
+    func updateMapName(name: String?) {
+        guard let name = name else { return } // Make sure we have a name
+        map.name = name // Update map name, triggers save and refresh
     }
     
     

@@ -81,6 +81,7 @@ class MapListViewController: UITableViewController {
         // Reload data whenever view appears
         self.navigationItem.title = "Your Maps" // Set screen title
         userData = UserData.init() // Get fresh user data
+        tableView.reloadData() // Refresh tableview with new data
         showEmptyStateIfNoMaps() // Check if should display empty state
     }
 
