@@ -97,6 +97,12 @@ class MapListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.mapListItem.rawValue, for: indexPath)
         cell.textLabel?.text = userData.maps[indexPath.row].name
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 88, height: 44))
+        label.text = "photo".pluralize(count: userData.maps[indexPath.row].locations.count)
+        label.textColor = UIColor.grayLight()
+        label.textAlignment = .right
+        label.font = UIFont.caption()
+        cell.accessoryView = label
         return cell
     }
 
