@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MapKit
 
 struct Map: Codable {
     
@@ -22,6 +23,21 @@ struct Map: Codable {
         let encoder = JSONEncoder()
         if let jsonData = try? encoder.encode(self) {
             return jsonData
+        }
+        return nil
+    }
+    
+    // Find location index from coordinates
+    func findLocationIndexFromCoordinates(_ coordinates: CLLocationCoordinate2D) -> Int? {
+        let latlong = "\(coordinates.latitude),\(coordinates.longitude)"
+        for (index, location) in locations.enumerated() {
+            guard
+                let latitude = location.coordinate?.latitude,
+                let longitude = location.coordinate?.longitude
+                else { return nil }
+            if latlong == "\(latitude),\(longitude)" {
+                return index
+            }
         }
         return nil
     }

@@ -8,35 +8,32 @@
 
 import UIKit
 import MapKit
+import TLPhotoPicker
+import Photos
 
-class MapViewController: UIViewController, CollectionViewMapTarget {
+class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerViewControllerDelegate, MKMapViewDelegate {
     
     // =========================================
     // MODEL
     
-    var map: Map!
-    
-    var visibleAnnotations: [MKAnnotation]? {
+    var userData = UserData.init()
+    var map: Map! {
         didSet {
-            guard let annotations = visibleAnnotations else { return }
-            mapView.showAnnotations(annotations, animated: true)
+            userData.maps[map.id] = map // update data
+            photoStripCollectionView.map = map // update photo strip
+            loadDataOnMap() // update map
         }
     }
-    
-    // Options for photo strip drag animation
-    enum DragOptions: CGFloat {
-        case maxLimit = -400
-        case minLimit = -140
-        case maximized = -350
-        case minimized = -340 // Should be -150, but disabling minimization for now
-    }
-    var photoStripTopConstraint: NSLayoutConstraint?
-    var photoStripTopConstraintInitialConstant: CGFloat = DragOptions.minimized.rawValue
-    
-    
+
+
     // =========================================
     // SUBVIEWS
     
+    lazy var addPhotosButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(addPhotosButtonTapped(_:)))
+        return btn
+    }()
+
     lazy var editMapButton: UIBarButtonItem = {
         let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editMapButtonTapped(_:)))
         return btn
@@ -51,8 +48,6 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
         let view = UIView()
         view.backgroundColor = .white
         view.isUserInteractionEnabled = true
-        // Commented out, disabling maximizing collection view for now, animation too choppy
-        // view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDragPhotoStrip)))
         view.layer.masksToBounds = false
         view.layer.shadowOffset = CGSize(width: 0, height: -1)
         view.layer.shadowOpacity = 0.1
@@ -77,7 +72,7 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
         // Basic layout
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        navigationItem.rightBarButtonItems = [editMapButton]
+        navigationItem.rightBarButtonItems = [addPhotosButton, editMapButton]
         title = map.name
         
         view.addSubview(mapView)
@@ -86,15 +81,9 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
         
         mapView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: photoStripContainer.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        photoStripContainer.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: view.bounds.height)
-        
-        photoStripTopConstraint = photoStripContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: DragOptions.minimized.rawValue)
-        photoStripTopConstraint?.isActive = true
+        photoStripContainer.anchor(top: view.safeAreaLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: -350, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 350)
         
         photoStripCollectionView.anchor(top: photoStripContainer.topAnchor, left: photoStripContainer.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: photoStripContainer.rightAnchor, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        photoStripCollectionView.mapTargetDelegate = self
-
     }
     
     // =========================================
@@ -103,17 +92,94 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutSubviews()
-        addLocationsToMap()
         mapView.delegate = self
+        photoStripCollectionView.photoStripDelegate = self
+        loadDataOnMap()
+        autoOpenPickerIfMapIsEmpty()
     }
 
     
     // =========================================
     // ACTION FUNCTIONS
+    
+    // Tapped "add" button on navbar
+    @objc func addPhotosButtonTapped(_ sender: AnyObject?) {
+        openPicker()
+    }
+    
+    // Tapped "more" button on navbar
+    @objc func editMapButtonTapped(_ sender: AnyObject?) {
+        print("edit map name or delete images")
+//        let editMapController = EditMapViewController()
+//        editMapController.map = map
+//        navigationController?.pushViewController(editMapController, animated: true)
+    }
+    
+    
+    // =========================================
+    // PICKER FUNCTIONS
+    
+    // Open image picker if map has no images yet
+    func autoOpenPickerIfMapIsEmpty() -> Void {
+        if map.locations.count == 0 {
+            openPicker()
+        }
+    }
+    
+    // Open photo picker (check status, request permission)
+    func openPicker() {
+        PHPhotoLibrary.requestAuthorization { (status) in
+            switch status {
+            case .authorized:
+                let imagePicker = TLPhotosPickerViewController.custom()
+                imagePicker.delegate = self
+                DispatchQueue.main.async {
+                    self.present(imagePicker, animated: true, completion: nil)
+                }
+            default:
+                DispatchQueue.main.async {
+                    self.navigationController?.pushViewController(AccessDeniedViewController(), animated: true)
+                }
+            }
+        }
+    }
+    
+    // Finished picking images, save data
+    func dismissPhotoPicker(withPHAssets: [PHAsset]) {
+        for asset in withPHAssets {
+            
+            guard let latitude = asset.location?.coordinate.latitude else { return }
+            guard let longitude = asset.location?.coordinate.longitude else { return }
+            guard let date = asset.creationDate else { return }
+            
+            // Create new location
+            let location = Location.init(
+                name: "New location",
+                address: "Add address",
+                identifier: asset.localIdentifier,
+                latitude: latitude,
+                longitude: longitude,
+                date: date
+            )
+            
+            // Update data
+            var locations = self.map.locations // get current locatiosn
+            locations.append(location) // append new location
+            let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
+            self.map.locations = sortedLocations // update map locations with sorted list
+        }
+    }
 
+    
+    // =========================================
+    // MAP FUNCTIONS
+    
     // Fill map
-    func addLocationsToMap() {
-        // Put locations on map and request routes
+    func loadDataOnMap() {
+        // Remove any annotations to start over
+        mapView.removeAnnotations(mapView.annotations)
+        
+        // Add locations
         for (index, location) in map.locations.enumerated() {
             mapView.addAnnotation(location.pin)
             if index > 0 {
@@ -122,14 +188,7 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
         }
         
         // Zoom to fit annotations
-        visibleAnnotations = mapView.annotations
-    }
-    
-    // Tapped "more" button on navbar
-    @objc func editMapButtonTapped(_ sender: AnyObject?) {
-        let editMapController = EditMapViewController()
-        editMapController.map = map
-        navigationController?.pushViewController(editMapController, animated: true)
+        focusOnAnnotations(mapView.annotations)
     }
     
     // Request route
@@ -153,72 +212,36 @@ class MapViewController: UIViewController, CollectionViewMapTarget {
         }
     }
     
-    
-    // Drag photo strip animation
-    @objc func handleDragPhotoStrip(gesture: UIPanGestureRecognizer) {
-        
-        // IS DRAGGING
-        if gesture.state == .changed {
-            
-            // Get Y translation, limit at dragLimit
-            var translation = gesture.translation(in: self.view).y + photoStripTopConstraintInitialConstant
-            if translation < DragOptions.maxLimit.rawValue { translation = DragOptions.maxLimit.rawValue }
-            if translation > DragOptions.minLimit.rawValue { translation = DragOptions.minLimit.rawValue }
-            
-            // Apply translation
-            photoStripTopConstraint?.constant = translation
-            self.photoStripCollectionView.setNeedsLayout()
-            self.photoStripCollectionView.collectionViewLayout.invalidateLayout()
-            
-        // ENDED DRAGGING
-        } else if gesture.state == .ended {
-            
-            // Get Y translation, limit at dragLimit
-            var translation = gesture.translation(in: self.photoStripContainer).y + photoStripTopConstraintInitialConstant
-            if translation < DragOptions.maxLimit.rawValue { translation = DragOptions.maxLimit.rawValue }
-            if translation > DragOptions.minLimit.rawValue { translation = DragOptions.minLimit.rawValue }
-            
-            // Get gesture velocity
-            let velocity = gesture.velocity(in: self.photoStripContainer).y
-
-            // Setup final positions
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-
-                // Stay at maximized position
-                if translation < DragOptions.maxLimit.rawValue / 2 || velocity < -500 {
-                    self.photoStripTopConstraint?.constant = DragOptions.maximized.rawValue
-                    self.photoStripTopConstraintInitialConstant = DragOptions.maximized.rawValue
-                    
-                    // Go back to minimized position
-                } else {
-                    self.photoStripTopConstraint?.constant = DragOptions.minimized.rawValue
-                    self.photoStripTopConstraintInitialConstant = DragOptions.minimized.rawValue
-                }
-                
-                // Animate
-                self.view.layoutIfNeeded()
-                self.photoStripCollectionView.collectionViewLayout.invalidateLayout()
-            })
-        }
-    }
-    
-    // Recenter map on specific annotation
-    func recenterMap(index: Int) {
-        visibleAnnotations = [map.locations[index].pin]
-    }
-
-}
-
-// =========================================
-// MAP VIEW DELEGATE FUNCTIONS
-extension MapViewController: MKMapViewDelegate {
-    
     // Render route line on map
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         renderer.strokeColor = .blue
         renderer.lineWidth = 1
         return renderer
+    }
+    
+    // Selected annotation on map
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let annotation = view.annotation else { return }
+        
+        // Center map on pin
+        focusOnAnnotations([annotation])
+        
+        // Center photostrip on photo
+        guard let index = map.findLocationIndexFromCoordinates(annotation.coordinate) else { return }
+        
+        let indexPath = IndexPath(row: index, section: 0)
+        photoStripCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+    
+    // Move map to focus on pins
+    func focusOnAnnotations(_ annotations: [MKAnnotation]) -> Void {
+        mapView.showAnnotations(annotations, animated: true)
+    }
+    
+    // Move map to focus on pins
+    func focusOnLocationPin(index: Int) -> Void {
+        mapView.showAnnotations([map.locations[index].pin], animated: true)
     }
 
 }

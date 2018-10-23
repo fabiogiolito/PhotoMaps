@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 import Photos
 
-struct Location: Codable {
+struct Location: Codable, Equatable {
 
     var name: String
     var address: String

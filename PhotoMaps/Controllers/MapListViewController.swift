@@ -30,9 +30,24 @@ class MapListViewController: UITableViewController {
         let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(newMapButtonTapped(_:)))
         return btn
     }()
-    
+
+    lazy var newMapPrompt: UIAlertController = {
+        let alert = UIAlertController(title: "New Map", message: "Choose a name for your map", preferredStyle: .alert)
+        let create = UIAlertAction(title: "Create", style: .default, handler: { (_) in
+            guard let mapNameField = alert.textFields?[0] else { return }
+            self.createNewMap(name: mapNameField.text)
+        })
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addTextField(configurationHandler: { (textField) in
+            textField.placeholder = "your map name…"
+        })
+        alert.addAction(create)
+        alert.addAction(cancel)
+        return alert
+    }()
+
     lazy var emptyStateView: EmptyStateView = {
-        let empty = EmptyStateView(frame: self.view.frame)
+        let empty = EmptyStateView()
         empty.titleLabel.text = "No maps"
         empty.bodyLabel.text = "Tap the + button to create your first map"
         return empty
@@ -47,7 +62,6 @@ class MapListViewController: UITableViewController {
         navigationController?.isNavigationBarHidden = false
         navigationItem.rightBarButtonItems = [newMapButton]
         navigationItem.leftBarButtonItems = []
-        title = "Your maps"
     }
     
     // =========================================
@@ -55,20 +69,19 @@ class MapListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         layoutSubviews()
-        
+
         // Register cells
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier.mapListItem.rawValue)
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Reload data whenever view appears
-        userData = UserData.init()
-        showEmptyStateIfNoMaps()
+        self.navigationItem.title = "Your Maps" // Set screen title
+        userData = UserData.init() // Get fresh user data
+        showEmptyStateIfNoMaps() // Check if should display empty state
     }
 
 
@@ -84,24 +97,12 @@ class MapListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.mapListItem.rawValue, for: indexPath)
         cell.textLabel?.text = userData.maps[indexPath.row].name
-        
-        // Accessory button
-        let editButton = UIButton(type: .system)
-        editButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        editButton.setTitle("Edit", for: .normal)
-        editButton.contentHorizontalAlignment = .right
-        editButton.tag = indexPath.row
-        editButton.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
-        cell.accessoryView = editButton
-
         return cell
     }
 
     // Selected a map
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let mapView = MapViewController()
-        mapView.map = userData.maps[indexPath.row]
-        self.navigationController?.pushViewController(mapView, animated: true)
+        openMap(userData.maps[indexPath.row])
     }
     
     // Provide a footer view to remove placeholder lines on tableview
@@ -115,23 +116,28 @@ class MapListViewController: UITableViewController {
 
     // Tapped new map button on navbar
     @objc func newMapButtonTapped(_ sender: AnyObject?) {
-        let nextId = userData.maps.count
-        let newMap = Map.init(id: nextId, name: "New map \(nextId)", locations: [])
-        userData.maps.append(newMap)
-        tableView.reloadData()
+        print("Prompt new map name")
+        present(newMapPrompt, animated: true)
+    }
 
-        let editMapController = EditMapViewController()
-        editMapController.map = newMap
-        self.navigationController?.pushViewController(editMapController, animated: true)
+    // Typed map name, create map and go to map screen
+    func createNewMap(name: String?) {
+        guard let name = name else { return } // Make sure we have a name
+        let nextId = userData.maps.count // Get a new ID for this map
+        let newMap = Map.init(id: nextId, name: name, locations: []) // Build map model
+        userData.maps.append(newMap) // Add to user data (saves it)
+        tableView.reloadData() // Reload tableview to show new map
+        openMap(newMap) // Go to map screen
     }
     
-    // Tapped edit button on map
-    @objc func editButtonTapped(_ sender: AnyObject?) {
-        if let index = sender?.tag {
-            let editMapController = EditMapViewController()
-            editMapController.map = userData.maps[index]
-            navigationController?.pushViewController(editMapController, animated: true)
-        }
+    // Open map screen
+    func openMap(_ map: Map) {
+        self.navigationItem.title = "" // prevent title from appearing on next screen's back button
+        
+        // Build map view and open it
+        let mapController = MapViewController()
+        mapController.map = map
+        self.navigationController?.pushViewController(mapController, animated: true)
     }
     
     // Show empty state

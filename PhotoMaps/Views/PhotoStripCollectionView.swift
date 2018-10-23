@@ -16,17 +16,18 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     var map: Map! {
         didSet {
             showEmptyStateIfNoLocations()
+            reloadData()
         }
     }
     
     // Control map from Collection View actions
-    var mapTargetDelegate: CollectionViewMapTarget!
+    var photoStripDelegate: PhotoStripDelegate!
     
     // =========================================
     // SUBVIEWS
     
     lazy var emptyStateView: EmptyStateView = {
-        let empty = EmptyStateView(frame: self.frame)
+        let empty = EmptyStateView()
         empty.titleLabel.text = "No photos"
         empty.bodyLabel.text = "Tap Edit then add some photos to build your map"
         return empty
@@ -97,7 +98,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     // Tapped image
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Recenter map on pin
-        mapTargetDelegate.recenterMap(index: indexPath.row)
+        photoStripDelegate.focusOnLocationPin(index: indexPath.row)
         // Recenter collectionview on image
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
@@ -127,12 +128,12 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
             }
 
             // Recenter map on image pin
-            mapTargetDelegate.recenterMap(index: index.row)
+            photoStripDelegate.focusOnLocationPin(index: index.row)
         }
     }
 }
 
 // PROTOCOL
-protocol CollectionViewMapTarget {
-    func recenterMap(index: Int) -> Void
+protocol PhotoStripDelegate {
+    func focusOnLocationPin(index: Int) -> Void
 }

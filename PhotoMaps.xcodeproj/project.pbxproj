@@ -21,7 +21,6 @@
 		DA616D382177D4D300DB331E /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA616D372177D4D300DB331E /* Labels.swift */; };
 		DA851F18217CF07800C770F4 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA851F17217CF07800C770F4 /* EmptyStateView.swift */; };
 		DAA04A62217A52160039E2E1 /* PhotoStripCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA04A61217A52160039E2E1 /* PhotoStripCollectionView.swift */; };
-		DAAC003A2178A5F300EF46A6 /* EditMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC00392178A5F300EF46A6 /* EditMapViewController.swift */; };
 		DAAC003C2178A61D00EF46A6 /* AccessDeniedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */; };
 		DAAC003E2178A67000EF46A6 /* MapListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003D2178A67000EF46A6 /* MapListViewController.swift */; };
 		DAAC00402178AF2C00EF46A6 /* Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003F2178AF2C00EF46A6 /* Picker.swift */; };
@@ -51,7 +50,6 @@
 		DA616D372177D4D300DB331E /* Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; };
 		DA851F17217CF07800C770F4 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		DAA04A61217A52160039E2E1 /* PhotoStripCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStripCollectionView.swift; sourceTree = "<group>"; };
-		DAAC00392178A5F300EF46A6 /* EditMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMapViewController.swift; sourceTree = "<group>"; };
 		DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessDeniedViewController.swift; sourceTree = "<group>"; };
 		DAAC003D2178A67000EF46A6 /* MapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListViewController.swift; sourceTree = "<group>"; };
 		DAAC003F2178AF2C00EF46A6 /* Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; };
@@ -121,7 +119,6 @@
 				DA616D282177A7FB00DB331E /* AccessPromptViewController.swift */,
 				DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */,
 				DAAC003D2178A67000EF46A6 /* MapListViewController.swift */,
-				DAAC00392178A5F300EF46A6 /* EditMapViewController.swift */,
 				DAAC0049217A153600EF46A6 /* MapViewController.swift */,
 			);
 			path = Controllers;
@@ -305,7 +302,6 @@
 				DAAC00422178E0BD00EF46A6 /* Images.swift in Sources */,
 				DAA04A62217A52160039E2E1 /* PhotoStripCollectionView.swift in Sources */,
 				DA616D382177D4D300DB331E /* Labels.swift in Sources */,
-				DAAC003A2178A5F300EF46A6 /* EditMapViewController.swift in Sources */,
 				DAAC00402178AF2C00EF46A6 /* Picker.swift in Sources */,
 				DAAC004A217A153600EF46A6 /* MapViewController.swift in Sources */,
 				DA616D292177A7FB00DB331E /* AccessPromptViewController.swift in Sources */,
