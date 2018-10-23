@@ -16,6 +16,7 @@ class MapListViewController: UITableViewController {
     var userData: UserData! {
         didSet {
             showEmptyStateIfNoMaps()
+            tableView.reloadData()
         }
     }
     
@@ -115,6 +116,18 @@ class MapListViewController: UITableViewController {
     // Provide a footer view to remove placeholder lines on tableview
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
+    }
+    
+    // Make cells deletable
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    // Edit cell: delete
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            userData.maps.remove(at: indexPath.row)
+        }
     }
     
 
