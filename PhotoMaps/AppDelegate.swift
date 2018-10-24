@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var userData = UserData.init()
         
-        // DEFINE WHICH VIEW CONTROLLER IS ROOT
+        // Define which view controller is Root
         let rootVC: UIViewController = {
             var vc: UIViewController
             
@@ -40,10 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return vc
         }()
         
-        // LOAD ROOT VIEW CONTROLLER IN NAVIGATION CONTROLLER
+        // Load root view controller in Navigation Controller
         window = UIWindow()
         window?.rootViewController = UINavigationController(rootViewController: rootVC)
         window?.makeKeyAndVisible()
+        
+        // Disable navigation bar translucency
+        UINavigationBar.appearance().isTranslucent = false
         
         return true
     }
