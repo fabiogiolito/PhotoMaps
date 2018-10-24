@@ -47,6 +47,11 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         return btn
     }()
     
+    lazy var doneEditButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(editButtonTapped(_:)))
+        return btn
+    }()
+    
     lazy var editMapPrompt: UIAlertController = {
         let alert = UIAlertController(title: "Map Name", message: nil, preferredStyle: .alert)
         let create = UIAlertAction(title: "Save", style: .default, handler: { (_) in
@@ -138,14 +143,19 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     // =========================================
     // ACTION FUNCTIONS
     
-    // Tapped "add" button on navbar
+    // Tapped Add button on navbar
     @objc func addPhotosButtonTapped(_ sender: AnyObject?) {
         openPicker()
     }
     
-    // Tapped "more" button on navbar
+    // Tapped Edit button on navbar
     @objc func editButtonTapped(_ sender: AnyObject?) {
         self.editingMode = !editingMode
+        if editingMode {
+            navigationItem.rightBarButtonItems = [doneEditButton]
+        } else {
+            navigationItem.rightBarButtonItems = [addPhotosButton, editMapButton]
+        }
     }
     
     // Tapped rename map
