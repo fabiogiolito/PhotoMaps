@@ -140,6 +140,10 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         autoOpenPickerIfMapIsEmpty()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        photoStripCollectionView.clipsToBounds = true
+    }
     
     // =========================================
     // LAYOUT FUNCTIONS
