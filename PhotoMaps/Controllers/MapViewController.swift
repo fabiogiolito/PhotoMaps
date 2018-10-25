@@ -140,6 +140,11 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         autoOpenPickerIfMapIsEmpty()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        photoStripCollectionView.clipsToBounds = false
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         photoStripCollectionView.clipsToBounds = true
@@ -259,13 +264,14 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     
     // Fill map
     func loadDataOnMap() {
-        // Remove any annotations to start over
-        mapView.removeAnnotations(mapView.annotations)
+        mapView.removeAnnotations(mapView.annotations) // Remove all annotations to start over
+        mapView.removeOverlays(mapView.overlays) // Remove all overlays to start over
         
         // Add locations
         for (index, location) in map.locations.enumerated() {
             mapView.addAnnotation(location.pin)
             if index > 0 {
+                // Add routes
                 requestRoute(source: map.locations[index - 1], destination: location)
             }
         }
