@@ -38,7 +38,7 @@ class AccessPromptViewController: UIViewController {
     
     let accessPhotosButton: UIButton = {
         let btn = UIButton.large()
-        btn.setTitle("Access Photos", for: .normal)
+        btn.setTitle("Get Started", for: .normal)
         btn.addTarget(self, action: #selector(accessPhotosButtonTapped(_:)), for: .touchUpInside)
         return btn
     }()

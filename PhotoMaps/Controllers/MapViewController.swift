@@ -30,6 +30,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         didSet {
             photoStripCollectionView.reloadData()
             showHideRenameMapButton()
+            showBarButtons()
         }
     }
 
@@ -54,7 +55,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     
     lazy var editMapPrompt: UIAlertController = {
         let alert = UIAlertController(title: "Map Name", message: nil, preferredStyle: .alert)
-        let create = UIAlertAction(title: "Save", style: .default, handler: { (_) in
+        let save = UIAlertAction(title: "Save", style: .default, handler: { (_) in
             guard let mapNameField = alert.textFields?[0] else { return }
             self.updateMapName(name: mapNameField.text)
         })
@@ -63,7 +64,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
             textField.placeholder = "your map name…"
             textField.text = self.map.name
         })
-        alert.addAction(create)
+        alert.addAction(save)
         alert.addAction(cancel)
         return alert
     }()
@@ -109,7 +110,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         // Basic layout
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        navigationItem.rightBarButtonItems = [addPhotosButton, editMapButton]
+        showBarButtons()
         
         view.addSubview(mapView)
         view.addSubview(renameMapButton)
@@ -138,8 +139,42 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         loadDataOnMap()
         autoOpenPickerIfMapIsEmpty()
     }
+    
+    
+    // =========================================
+    // LAYOUT FUNCTIONS
+    
+    // Toggle "Rename map" button
+    func showHideRenameMapButton() {
+        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
+            if self.editingMode {
+                self.renameMapButton.transform = CGAffineTransform(translationX: 0, y: -44)
+            } else {
+                self.renameMapButton.transform = .identity
+            }
+        })
+    }
+    
+    // Toggle "Edit" and "Done" buttons
+    func showBarButtons() {
+        if editingMode {
+            navigationItem.rightBarButtonItems = [doneEditButton]
+        } else {
+            navigationItem.rightBarButtonItems = [addPhotosButton, editMapButton]
+        }
+    }
 
     
+    // =========================================
+    // MODEL FUNCTIONS
+    
+    // Perform name update
+    func updateMapName(name: String?) {
+        guard let name = name else { return } // Make sure we have a name
+        map.name = name // Update map name, triggers save and refresh
+    }
+
+
     // =========================================
     // ACTION FUNCTIONS
     
@@ -151,35 +186,15 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     // Tapped Edit button on navbar
     @objc func editButtonTapped(_ sender: AnyObject?) {
         self.editingMode = !editingMode
-        if editingMode {
-            navigationItem.rightBarButtonItems = [doneEditButton]
-        } else {
-            navigationItem.rightBarButtonItems = [addPhotosButton, editMapButton]
-        }
     }
     
     // Tapped rename map
     @objc func renameButtonTapped(_ sender: AnyObject?) {
         present(editMapPrompt, animated: true)
+        editingMode = false
     }
-    
-    // Perform name update
-    func updateMapName(name: String?) {
-        guard let name = name else { return } // Make sure we have a name
-        map.name = name // Update map name, triggers save and refresh
-    }
-    
-    func showHideRenameMapButton() {
-        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
-            if self.editingMode {
-                self.renameMapButton.transform = CGAffineTransform(translationX: 0, y: -44)
-            } else {
-                self.renameMapButton.transform = .identity
-            }
-        })
-    }
-    
-    
+
+
     // =========================================
     // PICKER FUNCTIONS
     
