@@ -60,8 +60,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         
         // Register cells
         register(PhotoStripCell.self, forCellWithReuseIdentifier: CellIdentifier.photoCell.rawValue)
-        
-        allowsMultipleSelection = true
+
     }
     
     required init?(coder aDecoder: NSCoder) {
