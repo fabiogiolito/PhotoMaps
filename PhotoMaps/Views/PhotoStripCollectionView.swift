@@ -107,7 +107,8 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
 
     // Size images to full height
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.height, height: self.frame.height)
+        let size = self.frame.width - 24 - 24
+        return CGSize(width: size, height: size)
     }
     
     // Tapped image
