@@ -37,6 +37,7 @@ class MapListViewController: UITableViewController {
         let create = UIAlertAction(title: "Create", style: .default, handler: { (_) in
             guard let mapNameField = alert.textFields?[0] else { return }
             self.createNewMap(name: mapNameField.text)
+            mapNameField.text = ""
         })
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addTextField(configurationHandler: { (textField) in
