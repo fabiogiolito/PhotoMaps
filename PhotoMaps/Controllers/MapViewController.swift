@@ -283,6 +283,12 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     
     // Request route
     func requestRoute(source: Location, destination: Location) {
+        
+        // Ignore if different days
+        if source.date.description.prefix(10) != destination.date.description.prefix(10) {
+            return
+        }
+        
         let request = MKDirections.Request()
         
         // Define points
