@@ -311,7 +311,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     // Render route line on map
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay as! MKPolyline)
-        renderer.strokeColor = .blue
+        renderer.strokeColor = UIColor.primary()
         renderer.lineWidth = 1
         return renderer
     }
