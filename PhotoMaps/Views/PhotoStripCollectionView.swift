@@ -77,6 +77,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
             self.backgroundView = nil
         } else {
             self.backgroundView = emptyStateView
+            self.backgroundView?.fillSuperview()
         }
     }
     

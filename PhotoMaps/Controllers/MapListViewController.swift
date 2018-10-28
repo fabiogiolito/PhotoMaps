@@ -165,6 +165,7 @@ class MapListViewController: UITableViewController {
             self.tableView.backgroundView = nil
         } else {
             self.tableView.backgroundView = emptyStateView
+            self.tableView.backgroundView?.fillSuperview()
         }
     }
 }
