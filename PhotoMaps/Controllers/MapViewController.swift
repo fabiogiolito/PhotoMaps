@@ -13,7 +13,7 @@ import Photos
 class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate {
 
     // =========================================
-    // MODEL
+    // MARK:- MODEL
     
     var userData = UserData.init()
     var map: Map! {
@@ -25,7 +25,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
 
     
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
     
     lazy var mapView: MKMapView = {
         let map = MKMapView()
@@ -53,7 +53,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
     
     
     // =========================================
-    // LAYOUT SUBVIEWS
+    // MARK:- LAYOUT SUBVIEWS
     
     func layoutSubviews() {
         
@@ -75,7 +75,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
     }
     
     // =========================================
-    // LIFECYCLE
+    // MARK:- LIFECYCLE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +88,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
 
     
     // =========================================
-    // MAP FUNCTIONS
+    // MARK:- MAP FUNCTIONS
     
     // Fill map
     func loadDataOnMap() {

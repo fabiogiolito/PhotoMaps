@@ -12,7 +12,7 @@ class EmptyStateView: UIView {
     
     
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -36,7 +36,7 @@ class EmptyStateView: UIView {
     
     
     // =========================================
-    // INITIALIZERS
+    // MARK:- INITIALIZERS
     
     override init(frame: CGRect) {
         super.init(frame: frame)

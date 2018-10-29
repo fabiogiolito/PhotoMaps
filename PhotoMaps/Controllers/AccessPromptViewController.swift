@@ -11,7 +11,7 @@ import UIKit
 class AccessPromptViewController: UIViewController {
     
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
 
     let image: UIImageView = {
         let img = UIImageView(image: UIImage(named: "map_illustration"))
@@ -55,7 +55,7 @@ class AccessPromptViewController: UIViewController {
     
     
     // =========================================
-    // LAYOUT SUBVIEWS
+    // MARK:- LAYOUT SUBVIEWS
     func layoutSubviews() {
         
         let buttonStack = UIStackView(arrangedSubviews: [ accessPhotosButton, explainerLabel ])
@@ -72,7 +72,7 @@ class AccessPromptViewController: UIViewController {
     }
     
     // =========================================
-    // LIFECYCLE
+    // MARK:- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,7 +87,7 @@ class AccessPromptViewController: UIViewController {
 
     
     // =========================================
-    // ACTION FUNCTIONS
+    // MARK:- ACTION FUNCTIONS
 
     @objc func accessPhotosButtonTapped(_ sender: AnyObject?) {
         present(UINavigationController(rootViewController: MapListViewController()), animated: true, completion: nil)

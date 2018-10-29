@@ -11,7 +11,7 @@ import UIKit
 class MapListViewController: UITableViewController {
     
     // =========================================
-    // MODEL
+    // MARK:- MODEL
     
     var userData: UserData! {
         didSet {
@@ -25,7 +25,7 @@ class MapListViewController: UITableViewController {
     }
     
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
     
     lazy var newMapButton: UIBarButtonItem = {
         let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(newMapButtonTapped(_:)))
@@ -57,7 +57,7 @@ class MapListViewController: UITableViewController {
     
     
     // =========================================
-    // LAYOUT SUBVIEWS
+    // MARK:- LAYOUT SUBVIEWS
     
     func layoutSubviews() {
         view.backgroundColor = .white
@@ -67,7 +67,7 @@ class MapListViewController: UITableViewController {
     }
     
     // =========================================
-    // LIFECYCLE
+    // MARK:- LIFECYCLE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,7 +90,7 @@ class MapListViewController: UITableViewController {
 
 
     // =========================================
-    // TABLE VIEW DATA SOURCE
+    // MARK:- TABLE VIEW DATA SOURCE
     
     // Number of maps
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -139,7 +139,7 @@ class MapListViewController: UITableViewController {
     
 
     // =========================================
-    // ACTION FUNCTIONS
+    // MARK:- ACTION FUNCTIONS
 
     // Tapped new map button on navbar
     @objc func newMapButtonTapped(_ sender: AnyObject?) {
@@ -159,12 +159,6 @@ class MapListViewController: UITableViewController {
     // Open map screen
     func openMap(_ map: Map) {
         self.title = "" // prevent title from appearing on next screen's back button
-        
-        // Build map view and open it
-//        let mapController = MapViewController()
-//        mapController.map = map
-//        self.navigationController?.pushViewController(mapController, animated: true)
-        
         let editMapController = EditMapViewController()
         editMapController.map = map
         self.navigationController?.pushViewController(editMapController, animated: true)

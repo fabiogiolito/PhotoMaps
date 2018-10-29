@@ -14,7 +14,7 @@ import Photos
 class EditMapViewController: UITableViewController, TLPhotosPickerViewControllerDelegate {
     
     // =========================================
-    // MODEL
+    // MARK:- MODEL
     
     var userData = UserData.init()
     var map: Map! {
@@ -43,7 +43,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     }
     
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
     
     lazy var addPhotosButton: UIBarButtonItem = {
         let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(addPhotosButtonTapped(_:)))
@@ -91,7 +91,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     
     // =========================================
-    // LAYOUT SUBVIEWS
+    // MARK:- LAYOUT SUBVIEWS
     
     func layoutSubviews() {
         view.backgroundColor = .white
@@ -100,7 +100,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     
     // =========================================
-    // LIFECYCLE
+    // MARK:- LIFECYCLE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,6 +111,8 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         // Register cells
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier.inputCell.rawValue)
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier.locationCell.rawValue)
+        
+        autoOpenPickerIfMapIsEmpty()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,7 +122,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
 
     // =========================================
-    // TABLE VIEW DATA SOURCE
+    // MARK:- TABLE VIEW DATA SOURCE
     
     // Number of sections
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -189,7 +191,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     
     // =========================================
-    // MODEL FUNCTIONS
+    // MARK:- MODEL FUNCTIONS
     
     // Perform name update
     func updateMapName(name: String?) {
@@ -245,7 +247,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
 
     
     // =========================================
-    // PICKER FUNCTIONS
+    // MARK:- PICKER FUNCTIONS
     
     // Open image picker if map has no images yet
     func autoOpenPickerIfMapIsEmpty() -> Void {
@@ -306,7 +308,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     }
     
     // =========================================
-    // ACTION FUNCTIONS
+    // MARK:- ACTION FUNCTIONS
     
     // Tapped Add button on navbar
     @objc func addPhotosButtonTapped(_ sender: AnyObject?) {
@@ -332,7 +334,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     
     // =========================================
-    // HELPER FUNCTIONS
+    // MARK:- HELPER FUNCTIONS
 
     // Show empty state
     func showEmptyStateIfNoLocations() -> Void {

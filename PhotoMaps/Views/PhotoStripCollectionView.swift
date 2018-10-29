@@ -12,7 +12,7 @@ import TLPhotoPicker
 class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     // =========================================
-    // MODEL
+    // MARK:- MODEL
     
     var map: Map! {
         didSet {
@@ -30,7 +30,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     
 
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
     
     lazy var emptyStateView: EmptyStateView = {
         let empty = EmptyStateView()
@@ -41,7 +41,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
 
 
     // =========================================
-    // INITIALIZERS
+    // MARK:- INITIALIZERS
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -69,7 +69,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     
     
     // =========================================
-    // FUNCTIONS
+    // MARK:- FUNCTIONS
     
     // Empty state
     func showEmptyStateIfNoLocations() {
@@ -83,7 +83,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     
     
     // =========================================
-    // COLLECTION VIEW FUNCTIONS
+    // MARK:- COLLECTION VIEW FUNCTIONS
     
     // Numer of images
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -142,7 +142,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     }
 }
 
-// PROTOCOL
+// MARK:- PROTOCOL
 protocol PhotoStripDelegate {
     func focusOnLocationPin(index: Int) -> Void
 }

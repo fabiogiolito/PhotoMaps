@@ -11,7 +11,7 @@ import UIKit
 class AccessDeniedViewController: UIViewController {
     
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
 
     let image: UIImageView = {
         let img = UIImageView(image: UIImage(named: "map_lost"))
@@ -46,7 +46,7 @@ class AccessDeniedViewController: UIViewController {
     }()
     
     // =========================================
-    // LAYOUT SUBVIEWS
+    // MARK:- LAYOUT SUBVIEWS
     func layoutSubviews() {
         
         let buttonStack = UIStackView(arrangedSubviews: [ openSettingsButton, explainerLabel ])
@@ -63,7 +63,7 @@ class AccessDeniedViewController: UIViewController {
     }
     
     // =========================================
-    // LIFECYCLE
+    // MARK:- LIFECYCLE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +78,7 @@ class AccessDeniedViewController: UIViewController {
     }
     
     // =========================================
-    // ACTION FUNCTIONS
+    // MARK:- ACTION FUNCTIONS
     
     @objc func openSettingsButtonTapped(_ sender: AnyObject?) {
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)

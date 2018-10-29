@@ -11,7 +11,7 @@ import UIKit
 class LocationCell: UITableViewCell {
     
     // =========================================
-    // MODEL
+    // MARK:- MODEL
     
     var location: Location! {
         didSet {
@@ -23,7 +23,7 @@ class LocationCell: UITableViewCell {
     
     
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
     
     let thumbnailView: UIImageView = {
         let img = UIImageView()
@@ -46,7 +46,7 @@ class LocationCell: UITableViewCell {
 
     
     // =========================================
-    // INITIALIZER
+    // MARK:- INITIALIZER
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

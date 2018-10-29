@@ -11,7 +11,7 @@ import UIKit
 class PhotoStripCell: UICollectionViewCell {
     
     // =========================================
-    // SUBVIEWS
+    // MARK:- SUBVIEWS
     
     let imageView: UIImageView = {
         let imgView = UIImageView()
@@ -22,7 +22,7 @@ class PhotoStripCell: UICollectionViewCell {
 
     
     // =========================================
-    // INITIALIZERS
+    // MARK:- INITIALIZERS
     
     override init(frame: CGRect) {
         super.init(frame: frame)
