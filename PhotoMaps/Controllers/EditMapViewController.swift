@@ -36,7 +36,6 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         case view
         case share
         case rename
-        static let count = 3
     }
     
     enum CellIdentifier: String {
@@ -74,6 +73,22 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         return alert
     }()
     
+    let actionsStack: UIStackView = {
+        let viewBtn = UIButton.vertical(title: "VIEW", icon: "icon_map")
+        viewBtn.addTarget(self, action: #selector(viewButtonTapped(_:)), for: .touchUpInside)
+        
+        let shareBtn = UIButton.vertical(title: "SHARE", icon: "icon_share")
+        shareBtn.addTarget(self, action: #selector(shareButtonTapped(_:)), for: .touchUpInside)
+        
+        let renameBtn = UIButton.vertical(title: "RENAME", icon: "icon_edit")
+        renameBtn.addTarget(self, action: #selector(renameButtonTapped(_:)), for: .touchUpInside)
+        
+        let stack = UIStackView(arrangedSubviews: [viewBtn, shareBtn, renameBtn])
+        stack.distribution = .fillEqually
+        stack.tintColor = UIColor.grayLight()
+        return stack
+    }()
+    
     
     // =========================================
     // LAYOUT SUBVIEWS
@@ -98,9 +113,8 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier.locationCell.rawValue)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         title = map.name
     }
     
@@ -117,7 +131,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .actions:
-            return Action.count
+            return 1
         case .locations:
             return map.locations.count
         }
@@ -128,22 +142,9 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         switch Section(rawValue: indexPath.section)! {
         case .actions:
             let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.inputCell.rawValue, for: indexPath)
-            cell.textLabel?.textColor = UIColor.primary()
-            
-            switch Action(rawValue: indexPath.row)! {
-            case .view:
-                cell.textLabel?.text = "View map"
-                cell.imageView?.image = UIImage.init(named: "icon_map")
-                cell.accessoryType = .disclosureIndicator
-
-            case .share:
-                cell.textLabel?.text = "Share map"
-                cell.imageView?.image = UIImage.init(named: "icon_share")
-            
-            case .rename:
-                cell.textLabel?.text = "Rename map"
-                cell.imageView?.image = UIImage.init(named: "icon_edit")
-            }
+            cell.addSubview(actionsStack)
+            actionsStack.anchorSize(width: 0, height: 88)
+            actionsStack.fillSuperview()
             return cell
 
         case .locations:
@@ -160,20 +161,8 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch Section(rawValue: indexPath.section)! {
         case .actions:
-            switch Action(rawValue: indexPath.row)! {
-            case .view:
-                let mapVC = MapViewController()
-                mapVC.map = map
-                title = ""
-                navigationController?.pushViewController(mapVC, animated: true)
-                
-            case .share:
-                print("Share map")
-            
-            case .rename:
-                present(renameMapPrompt, animated: true)
-            }
-            
+            break
+
         case .locations:
             print("location tapped", indexPath.row)
         }
@@ -322,6 +311,23 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     // Tapped Add button on navbar
     @objc func addPhotosButtonTapped(_ sender: AnyObject?) {
         openPicker()
+    }
+    
+    @objc func viewButtonTapped(_ sender: AnyObject?) {
+        print("tapped view button")
+        let mapVC = MapViewController()
+        mapVC.map = map
+        title = ""
+        navigationController?.pushViewController(mapVC, animated: true)
+    }
+    
+    @objc func shareButtonTapped(_ sender: AnyObject?) {
+        print("tapped share button")
+    }
+    
+    @objc func renameButtonTapped(_ sender: AnyObject?) {
+        print("tapped rename button")
+        present(renameMapPrompt, animated: true)
     }
     
     

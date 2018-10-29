@@ -35,7 +35,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     lazy var emptyStateView: EmptyStateView = {
         let empty = EmptyStateView()
         empty.titleLabel.text = "No photos"
-        empty.bodyLabel.text = "Tap Edit then add some photos to build your map"
+        empty.bodyLabel.text = "Go back and add some photos to build your map"
         return empty
     }()
 

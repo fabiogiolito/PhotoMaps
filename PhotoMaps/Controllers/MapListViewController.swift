@@ -86,6 +86,7 @@ class MapListViewController: UITableViewController {
         tableView.reloadData() // Refresh tableview with new data
         showEmptyStateIfNoMaps() // Check if should display empty state
     }
+    
 
 
     // =========================================
@@ -157,7 +158,7 @@ class MapListViewController: UITableViewController {
     
     // Open map screen
     func openMap(_ map: Map) {
-        self.navigationItem.title = "" // prevent title from appearing on next screen's back button
+        self.title = "" // prevent title from appearing on next screen's back button
         
         // Build map view and open it
 //        let mapController = MapViewController()

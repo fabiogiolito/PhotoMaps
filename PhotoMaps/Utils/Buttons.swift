@@ -86,5 +86,24 @@ extension UIButton {
         button.imageView?.contentMode = .scaleAspectFill
         return button
     }
+    
+    static func vertical(title: String, icon: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = UIFont.caption()
+        button.tintColor = UIColor.grayLight()
+        
+        var insets = button.titleEdgeInsets
+        insets.bottom = -32
+        button.titleEdgeInsets = insets
+        
+        let image = UIImageView(image: UIImage(named: icon))
+        image.contentMode = .center
+        button.addSubview(image)
+        
+        image.anchor(top: button.topAnchor, left: button.leftAnchor, bottom: button.centerYAnchor, right: button.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -24, paddingRight: 0, width: 0, height: 0)
+        
+        return button
+    }
 
 }
