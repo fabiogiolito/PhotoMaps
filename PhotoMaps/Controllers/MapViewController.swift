@@ -18,10 +18,8 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
     var userData = UserData.init()
     var map: Map! {
         didSet {
-            userData.maps[map.id] = map // update data
-            photoStripCollectionView.map = map // update photo strip
-            loadDataOnMap() // update map
-            title = map.name // update map title on navbar
+            photoStripCollectionView.map = map // load photo strip
+            loadDataOnMap() // load map pins
         }
     }
 
@@ -85,6 +83,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
         mapView.delegate = self
         photoStripCollectionView.photoStripDelegate = self
         loadDataOnMap()
+        title = map.name
     }
 
     

@@ -207,6 +207,52 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         guard let name = name else { return } // Make sure we have a name
         map.name = name // Update map name, triggers save and refresh
     }
+    
+    // Try to fetch location Name and Address automatically
+    func fetchLocationData(locations: [Location]) {
+        print("starting location fetch")
+        for (index, location) in locations.enumerated() {
+            var copyLocation = location
+            guard let geocodeLocation = location.photoAsset?.location else {
+                print("no location found")
+                return
+            }
+
+            // if name or address is blank
+            if copyLocation.name == "" || copyLocation.address == "" {
+                
+                // perform fetch for location data
+                CLGeocoder().reverseGeocodeLocation(geocodeLocation) { (placemarks, error) in
+                    if let error = error {
+                        print("error on reverse geocode location: ", error)
+                        return
+                    }
+                    guard let placemark = placemarks?.first else {
+                        print("no placemarks returned on location address fetch")
+                        return
+                    }
+                    
+                    // Treat data
+                    let name = placemark.name ?? ""
+                    let streetNumber = placemark.subThoroughfare ?? ""
+                    let streetName = placemark.thoroughfare ?? ""
+                    let address = "\(streetNumber) \(streetName)".trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    // Apply data
+                    DispatchQueue.main.async {
+                        if copyLocation.name == "" { // only update if name was blank
+                            copyLocation.name = name
+                        }
+                        if copyLocation.address == "" { // only update if address was blank
+                            copyLocation.address = address
+                        }
+                        self.map.locations[index] = copyLocation // apply changes
+                        self.tableView.reloadData() // show changes
+                    }
+                }
+            }
+        }
+    }
 
     
     // =========================================
@@ -241,14 +287,18 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
         for asset in withPHAssets {
             
-            guard let latitude = asset.location?.coordinate.latitude else { return }
-            guard let longitude = asset.location?.coordinate.longitude else { return }
-            guard let date = asset.creationDate else { return }
+            guard
+                let latitude = asset.location?.coordinate.latitude,
+                let longitude = asset.location?.coordinate.longitude,
+                let date = asset.creationDate
+            else {
+                break
+            }
             
             // Create new location
             let location = Location.init(
-                name: "New location",
-                address: "Add address",
+                name: "",
+                address: "",
                 identifier: asset.localIdentifier,
                 latitude: latitude,
                 longitude: longitude,
@@ -261,6 +311,9 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
             let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
             self.map.locations = sortedLocations // update map locations with sorted list
         }
+        
+        // Try to fetch name and address
+        fetchLocationData(locations: map.locations)
     }
     
     // =========================================

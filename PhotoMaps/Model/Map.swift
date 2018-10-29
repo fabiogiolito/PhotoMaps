@@ -11,10 +11,9 @@ import MapKit
 
 struct Map: Codable {
     
-    let id: Int
+    var id: Int
     var name: String
-    var locations: [Location]
-    
+    var locations: [Location] 
     
     // ==========================
     // FUNCTIONS

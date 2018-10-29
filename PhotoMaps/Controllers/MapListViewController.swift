@@ -129,6 +129,10 @@ class MapListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
             userData.maps.remove(at: indexPath.row)
+            // Update map ids
+            for (index, _) in userData.maps.enumerated() {
+                userData.maps[index].id = index
+            }
         }
     }
     
