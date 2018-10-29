@@ -8,10 +8,9 @@
 
 import UIKit
 import MapKit
-import TLPhotoPicker
 import Photos
 
-class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerViewControllerDelegate, MKMapViewDelegate {
+class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate {
 
     // =========================================
     // MODEL
@@ -25,58 +24,11 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
             title = map.name // update map title on navbar
         }
     }
-    
-    var editingMode: Bool = false {
-        didSet {
-            photoStripCollectionView.reloadData()
-            showHideRenameMapButton()
-            showBarButtons()
-        }
-    }
 
     
     // =========================================
     // SUBVIEWS
     
-    lazy var addPhotosButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(addPhotosButtonTapped(_:)))
-        return btn
-    }()
-
-    lazy var editMapButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(editButtonTapped(_:)))
-        return btn
-    }()
-    
-    lazy var doneEditButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(editButtonTapped(_:)))
-        return btn
-    }()
-    
-    lazy var editMapPrompt: UIAlertController = {
-        let alert = UIAlertController(title: "Map Name", message: nil, preferredStyle: .alert)
-        let save = UIAlertAction(title: "Save", style: .default, handler: { (_) in
-            guard let mapNameField = alert.textFields?[0] else { return }
-            self.updateMapName(name: mapNameField.text)
-        })
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-        alert.addTextField(configurationHandler: { (textField) in
-            textField.placeholder = "your map name…"
-            textField.text = self.map.name
-        })
-        alert.addAction(save)
-        alert.addAction(cancel)
-        return alert
-    }()
-    
-    lazy var renameMapButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Rename Map", for: .normal)
-        btn.backgroundColor = .white
-        btn.addTarget(self, action: #selector(renameButtonTapped(_:)), for: .touchUpInside)
-        return btn
-    }()
-
     lazy var mapView: MKMapView = {
         let map = MKMapView()
         return map
@@ -110,10 +62,8 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         // Basic layout
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        showBarButtons()
         
         view.addSubview(mapView)
-        view.addSubview(renameMapButton)
         view.addSubview(photoStripContainer)
         photoStripContainer.addSubview(photoStripCollectionView)
         
@@ -123,10 +73,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         photoStripCollectionView.anchorSquare(ratio: 1)
         
         mapView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: photoStripContainer.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-    
-        renameMapButton.anchor(top: photoStripContainer.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
-        
-        showHideRenameMapButton()
+
     }
     
     // =========================================
@@ -138,125 +85,6 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
         mapView.delegate = self
         photoStripCollectionView.photoStripDelegate = self
         loadDataOnMap()
-        autoOpenPickerIfMapIsEmpty()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        photoStripCollectionView.clipsToBounds = false
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        photoStripCollectionView.clipsToBounds = true
-    }
-    
-    // =========================================
-    // LAYOUT FUNCTIONS
-    
-    // Toggle "Rename map" button
-    func showHideRenameMapButton() {
-        UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
-            if self.editingMode {
-                self.renameMapButton.transform = CGAffineTransform(translationX: 0, y: -44)
-            } else {
-                self.renameMapButton.transform = .identity
-            }
-        })
-    }
-    
-    // Toggle "Edit" and "Done" buttons
-    func showBarButtons() {
-        if editingMode {
-            navigationItem.rightBarButtonItems = [doneEditButton]
-        } else {
-            navigationItem.rightBarButtonItems = [addPhotosButton, editMapButton]
-        }
-    }
-
-    
-    // =========================================
-    // MODEL FUNCTIONS
-    
-    // Perform name update
-    func updateMapName(name: String?) {
-        guard let name = name else { return } // Make sure we have a name
-        map.name = name // Update map name, triggers save and refresh
-    }
-
-
-    // =========================================
-    // ACTION FUNCTIONS
-    
-    // Tapped Add button on navbar
-    @objc func addPhotosButtonTapped(_ sender: AnyObject?) {
-        openPicker()
-    }
-    
-    // Tapped Edit button on navbar
-    @objc func editButtonTapped(_ sender: AnyObject?) {
-        self.editingMode = !editingMode
-    }
-    
-    // Tapped rename map
-    @objc func renameButtonTapped(_ sender: AnyObject?) {
-        present(editMapPrompt, animated: true)
-        editingMode = false
-    }
-
-
-    // =========================================
-    // PICKER FUNCTIONS
-    
-    // Open image picker if map has no images yet
-    func autoOpenPickerIfMapIsEmpty() -> Void {
-        if map.locations.count == 0 {
-            openPicker()
-        }
-    }
-    
-    // Open photo picker (check status, request permission)
-    func openPicker() {
-        PHPhotoLibrary.requestAuthorization { (status) in
-            switch status {
-            case .authorized:
-                let imagePicker = TLPhotosPickerViewController.custom()
-                imagePicker.delegate = self
-                DispatchQueue.main.async {
-                    self.present(imagePicker, animated: true, completion: nil)
-                }
-            default:
-                DispatchQueue.main.async {
-                    self.navigationController?.pushViewController(AccessDeniedViewController(), animated: true)
-                }
-            }
-        }
-    }
-    
-    // Finished picking images, save data
-    func dismissPhotoPicker(withPHAssets: [PHAsset]) {
-        for asset in withPHAssets {
-            
-            guard let latitude = asset.location?.coordinate.latitude else { return }
-            guard let longitude = asset.location?.coordinate.longitude else { return }
-            guard let date = asset.creationDate else { return }
-            
-            // Create new location
-            let location = Location.init(
-                name: "New location",
-                address: "Add address",
-                identifier: asset.localIdentifier,
-                latitude: latitude,
-                longitude: longitude,
-                date: date
-            )
-            
-            // Update data
-            var locations = self.map.locations // get current locatiosn
-            locations.append(location) // append new location
-            let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
-            self.map.locations = sortedLocations // update map locations with sorted list
-        }
     }
 
     
@@ -338,11 +166,6 @@ class MapViewController: UIViewController, PhotoStripDelegate, TLPhotosPickerVie
     // Move map to focus on pins
     func focusOnLocationPin(index: Int) -> Void {
         mapView.showAnnotations([map.locations[index].pin], animated: true)
-    }
-    
-    // Deleted photo, so should delete location
-    func deleteLocationFromMap(index: Int) {
-        map.locations.remove(at: index)
     }
 
 }

@@ -81,7 +81,7 @@ class MapListViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         // Reload data whenever view appears
-        self.navigationItem.title = "Your Maps" // Set screen title
+        title = "Your Maps" // Set screen title
         userData = UserData.init() // Get fresh user data
         tableView.reloadData() // Refresh tableview with new data
         showEmptyStateIfNoMaps() // Check if should display empty state
@@ -112,6 +112,7 @@ class MapListViewController: UITableViewController {
     // Selected a map
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         openMap(userData.maps[indexPath.row])
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // Provide a footer view to remove placeholder lines on tableview
@@ -155,9 +156,13 @@ class MapListViewController: UITableViewController {
         self.navigationItem.title = "" // prevent title from appearing on next screen's back button
         
         // Build map view and open it
-        let mapController = MapViewController()
-        mapController.map = map
-        self.navigationController?.pushViewController(mapController, animated: true)
+//        let mapController = MapViewController()
+//        mapController.map = map
+//        self.navigationController?.pushViewController(mapController, animated: true)
+        
+        let editMapController = EditMapViewController()
+        editMapController.map = map
+        self.navigationController?.pushViewController(editMapController, animated: true)
     }
     
     // Show empty state

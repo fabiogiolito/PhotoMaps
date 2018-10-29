@@ -9,7 +9,7 @@
 import UIKit
 import TLPhotoPicker
 
-class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PhotoCellDelegate {
+class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     // =========================================
     // MODEL
@@ -25,10 +25,10 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         case photoCell
     }
 
-    
     // Control map from Collection View actions
     var photoStripDelegate: PhotoStripDelegate!
     
+
     // =========================================
     // SUBVIEWS
     
@@ -52,7 +52,7 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         
         // Background
         backgroundColor = .white
-        clipsToBounds = false
+        clipsToBounds = true
         
         // Hide scroll bars
         showsHorizontalScrollIndicator = false
@@ -81,11 +81,6 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         }
     }
     
-    // Tapped delete button on photo cell
-    func deletePhotoFromStrip(index: Int) {
-        photoStripDelegate.deleteLocationFromMap(index: index)
-    }
-    
     
     // =========================================
     // COLLECTION VIEW FUNCTIONS
@@ -100,9 +95,6 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         let location = map.locations[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellIdentifier.photoCell.rawValue, for: indexPath) as! PhotoStripCell
         cell.imageView.image = location.image
-        cell.delegate = self
-        cell.deleteButton.isHidden = !self.photoStripDelegate.editingMode
-        cell.deleteButton.tag = indexPath.row
         return cell
     }
 
@@ -152,7 +144,5 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
 
 // PROTOCOL
 protocol PhotoStripDelegate {
-    var editingMode: Bool { get set }
     func focusOnLocationPin(index: Int) -> Void
-    func deleteLocationFromMap(index: Int) -> Void
 }
