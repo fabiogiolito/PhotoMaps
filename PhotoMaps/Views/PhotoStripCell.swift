@@ -11,15 +11,39 @@ import UIKit
 class PhotoStripCell: UICollectionViewCell {
     
     // =========================================
+    // MARK:- MODEL
+    
+    var location: Location! {
+        didSet {
+            imageView.image = location.image
+            locationName.text = location.name == "" ? " " : location.name
+            locationAddress.text = location.address == "" ? " " : location.address
+        }
+    }
+    
+    // =========================================
     // MARK:- SUBVIEWS
     
     let imageView: UIImageView = {
         let imgView = UIImageView()
         imgView.clipsToBounds = true
         imgView.contentMode = .scaleAspectFill
+        imgView.layer.cornerRadius = 2
         return imgView
     }()
-
+    
+    let locationName: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.body()
+        return label
+    }()
+    
+    let locationAddress: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.displayTextSmall()
+        return label
+    }()
+    
     
     // =========================================
     // MARK:- INITIALIZERS
@@ -27,8 +51,14 @@ class PhotoStripCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(imageView)
-        imageView.fillSuperview()
+        let stackView = UIStackView(arrangedSubviews: [locationName, locationAddress, imageView])
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.setCustomSpacing(8, after: locationAddress)
+        
+        addSubview(stackView)
+        stackView.fillSuperview()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

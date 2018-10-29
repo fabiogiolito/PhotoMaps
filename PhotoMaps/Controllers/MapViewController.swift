@@ -45,7 +45,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
     lazy var photoStripCollectionView: PhotoStripCollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 24, bottom: 24, right: 70)
         let cv = PhotoStripCollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)
         cv.map = self.map
         return cv

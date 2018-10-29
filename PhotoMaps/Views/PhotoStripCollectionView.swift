@@ -94,14 +94,15 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let location = map.locations[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellIdentifier.photoCell.rawValue, for: indexPath) as! PhotoStripCell
-        cell.imageView.image = location.image
+        cell.location = location
         return cell
     }
 
     // Size images to full height
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = self.frame.width - 24 - 24
-        return CGSize(width: size, height: size)
+        let width = self.frame.width - 24 - 24 - 46
+        let height = self.frame.height - 16 - 24
+        return CGSize(width: width, height: height)
     }
     
     // Tapped image
