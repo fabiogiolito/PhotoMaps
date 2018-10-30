@@ -51,6 +51,17 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
         return cv
     }()
     
+    lazy var recenterMapButton: UIButton = {
+        let btn = UIButton.icon(image: UIImage(named: "icon_recenter")!)
+        btn.backgroundColor = .white
+        btn.layer.cornerRadius = 16
+        btn.layer.borderWidth = 1
+        btn.layer.borderColor = UIColor.shadowLight().cgColor
+        btn.tintColor = UIColor.grayLight()
+        btn.addTarget(self, action: #selector(recenterMapButtonTapped(_:)), for: .touchUpInside)
+        return btn
+    }()
+    
     
     // =========================================
     // MARK:- LAYOUT SUBVIEWS
@@ -62,6 +73,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
         navigationController?.isNavigationBarHidden = false
         
         view.addSubview(mapView)
+        view.addSubview(recenterMapButton)
         view.addSubview(photoStripContainer)
         photoStripContainer.addSubview(photoStripCollectionView)
         
@@ -72,6 +84,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
         
         mapView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: photoStripContainer.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
+        recenterMapButton.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 32, height: 32)
     }
     
     // =========================================
@@ -86,6 +99,13 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
         title = map.name
     }
 
+    
+    // =========================================
+    // MARK:- ACTION FUNCTIONS
+    
+    @objc func recenterMapButtonTapped(_ sender: AnyObject?) {
+        focusOnAnnotations(mapView.annotations)
+    }
     
     // =========================================
     // MARK:- MAP FUNCTIONS
@@ -155,6 +175,17 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
         
         let indexPath = IndexPath(row: index, section: 0)
         photoStripCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+    
+    // Custom Pins
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let pinImage = UIImageView(image: UIImage(named: "pin")!)
+        let view = MKAnnotationView(annotation: annotation, reuseIdentifier: "test")
+        view.frame.size = CGSize(width: 24, height: 32)
+        view.centerOffset = CGPoint(x: 0, y: -13)
+        view.addSubview(pinImage)
+        pinImage.fillSuperview()
+        return view
     }
     
     // Move map to focus on pins
