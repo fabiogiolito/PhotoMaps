@@ -210,13 +210,9 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     // Try to fetch location Name and Address automatically
     func fetchLocationData(locations: [Location]) {
-        print("starting location fetch")
         for (index, location) in locations.enumerated() {
             var copyLocation = location
-            guard let geocodeLocation = location.photoAsset?.location else {
-                print("no location found")
-                return
-            }
+            guard let geocodeLocation = location.photoAsset?.location else { return }
 
             // if name or address is blank
             if copyLocation.name == "" || copyLocation.address == "" {
@@ -325,7 +321,6 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     }
     
     @objc func viewButtonTapped(_ sender: AnyObject?) {
-        print("tapped view button")
         let mapVC = MapViewController()
         mapVC.map = userData.maps[map.id]
         title = ""
@@ -337,7 +332,6 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     }
     
     @objc func renameButtonTapped(_ sender: AnyObject?) {
-        print("tapped rename button")
         present(renameMapPrompt, animated: true)
     }
     

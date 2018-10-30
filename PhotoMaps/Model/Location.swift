@@ -68,30 +68,4 @@ struct Location: Codable, Equatable {
         }
         return nil
     }
-    
-//    func fetchReverseGeocodeAddress() {
-//
-//        guard let photoAsset = photoAsset else { return }
-//        guard let location = photoAsset.location else { return }
-//
-//        CLGeocoder().reverseGeocodeLocation(location) { (placemarks, error) in
-//            if let error = error {
-//                print("error on reverse geocode location: ", error)
-//                return
-//            }
-//            guard let placemark = placemarks?.first else {
-//                print("no placemarks returned on reverse geocode location")
-//                return
-//            }
-//
-//            let streetNumber = placemark.subThoroughfare ?? ""
-//            let streetName = placemark.thoroughfare ?? ""
-//
-//            DispatchQueue.main.async {
-//                address = "\(streetNumber) \(streetName)"
-//                print("returned geocode: ", address)
-//            }
-//        }
-//    }
-
 }
