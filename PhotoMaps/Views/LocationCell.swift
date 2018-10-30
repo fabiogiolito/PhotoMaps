@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LocationCell: UITableViewCell {
+class LocationCell: UITableViewCell, UITextFieldDelegate {
     
     // =========================================
     // MARK:- MODEL
@@ -21,6 +21,8 @@ class LocationCell: UITableViewCell {
         }
     }
     
+    var dataDelegate: LocationCellDataDelegate!
+    
     
     // =========================================
     // MARK:- SUBVIEWS
@@ -32,15 +34,17 @@ class LocationCell: UITableViewCell {
         return img
     }()
 
-    let locationNameLabel: UILabel = {
-        let label = UILabel()
+    lazy var locationNameLabel: UITextField = {
+        let label = UITextField()
         label.font = UIFont.body()
+        label.delegate = self
         return label
     }()
 
-    let locationAddressLabel: UILabel = {
-        let label = UILabel()
+    lazy var locationAddressLabel: UITextField = {
+        let label = UITextField()
         label.font = UIFont.displayTextSmall()
+        label.delegate = self
         return label
     }()
 
@@ -73,5 +77,30 @@ class LocationCell: UITableViewCell {
     }
     
     
+    // =========================================
+    // MARK:- TEXTFIELD FUNCTIONS
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let value = textField.text else { return }
+        if textField == locationNameLabel {
+            location.name = value
+        }
+        if textField == locationAddressLabel {
+            location.address = value
+        }
+        dataDelegate.updateLocation(location)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if textField == locationNameLabel {
+            locationAddressLabel.becomeFirstResponder()
+        }
+        return true
+    }
+
+}
+
+protocol LocationCellDataDelegate {
+    func updateLocation(_ location: Location)
 }

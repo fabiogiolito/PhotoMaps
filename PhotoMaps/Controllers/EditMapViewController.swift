@@ -11,7 +11,7 @@ import MapKit
 import TLPhotoPicker
 import Photos
 
-class EditMapViewController: UITableViewController, TLPhotosPickerViewControllerDelegate {
+class EditMapViewController: UITableViewController, TLPhotosPickerViewControllerDelegate, LocationCellDataDelegate {
     
     // =========================================
     // MARK:- MODEL
@@ -155,6 +155,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
                 cell = LocationCell.init(style: .default, reuseIdentifier: CellIdentifier.locationCell.rawValue) as LocationCell
             }
             cell?.location = map.locations[indexPath.row]
+            cell?.dataDelegate = self
             return cell!
         }
     }
@@ -166,7 +167,8 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
             break
 
         case .locations:
-            print("location tapped", indexPath.row)
+            guard let cell = tableView.cellForRow(at: indexPath) as? LocationCell else { return }
+            cell.locationNameLabel.becomeFirstResponder()
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -197,6 +199,13 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     func updateMapName(name: String?) {
         guard let name = name else { return } // Make sure we have a name
         map.name = name // Update map name, triggers save and refresh
+    }
+    
+    // Update Location
+    func updateLocation(_ location: Location) {
+        guard let coordinate = location.coordinate else { return }
+        guard let index = map.findLocationIndexFromCoordinates(coordinate) else { return }
+        userData.maps[map.id].locations[index] = location
     }
     
     // Try to fetch location Name and Address automatically
@@ -318,7 +327,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     @objc func viewButtonTapped(_ sender: AnyObject?) {
         print("tapped view button")
         let mapVC = MapViewController()
-        mapVC.map = map
+        mapVC.map = userData.maps[map.id]
         title = ""
         navigationController?.pushViewController(mapVC, animated: true)
     }
