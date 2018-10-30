@@ -26,11 +26,14 @@ Progress list:
 - [x] Focus map on associated pin when viewing a photo
 - [x] Rename map
 - [x] Delete photos from map
+- [x] Detect and handle different days
+- [x] Auto detect location name and address from coordinates
+- [x] Edit location name and address
+- [x] Show location name and address on map
 
-- [ ] Fix bug when adding photos not downloaded to phone
+- [ ] Load photos from iCloud
 - [ ] Play videos on photo strip or filter them out from picker
 - [ ] Filter out photos without location from picker
-- [ ] Detect and handle different days
 - [ ] Detect and handle routes not found
 
 - [ ] Make map sharable 
