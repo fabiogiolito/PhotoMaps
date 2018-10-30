@@ -36,15 +36,19 @@ class LocationCell: UITableViewCell, UITextFieldDelegate {
 
     lazy var locationNameLabel: UITextField = {
         let label = UITextField()
+        label.placeholder = "Name"
         label.font = UIFont.body()
         label.delegate = self
+        label.returnKeyType = UIReturnKeyType.next
         return label
     }()
 
     lazy var locationAddressLabel: UITextField = {
         let label = UITextField()
+        label.placeholder = "Address"
         label.font = UIFont.displayTextSmall()
         label.delegate = self
+        label.returnKeyType = .done
         return label
     }()
 
