@@ -105,6 +105,11 @@ class PhotoStripCollectionView: UICollectionView, UICollectionViewDataSource, UI
         return CGSize(width: width, height: height)
     }
     
+    // Spacing between photos
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 24
+    }
+    
     // Tapped image
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Recenter map on pin
