@@ -285,9 +285,14 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
             
             guard
                 let latitude = asset.location?.coordinate.latitude,
-                let longitude = asset.location?.coordinate.longitude,
-                let date = asset.creationDate
+                let longitude = asset.location?.coordinate.longitude
             else {
+                print("no coordinates for selected asset")
+                break
+            }
+            
+            guard let date = asset.creationDate else {
+                print("no date for selected asset")
                 break
             }
             
