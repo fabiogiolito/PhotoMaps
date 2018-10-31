@@ -281,7 +281,12 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     // Finished picking images, save data
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
+        print("----")
+        print("dismissed photo picker, number of assets:", withPHAssets.count)
+
         for asset in withPHAssets {
+            
+            print("asset:", asset)
             
             guard
                 let latitude = asset.location?.coordinate.latitude,
@@ -311,7 +316,11 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
             locations.append(location) // append new location
             let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
             self.map.locations = sortedLocations // update map locations with sorted list
+            
+            print("number of locations in map now is:", self.map.locations.count)
         }
+        
+        print("finished building locations. final count:", self.map.locations.count)
         
         // Try to fetch name and address
         fetchLocationData(locations: map.locations)

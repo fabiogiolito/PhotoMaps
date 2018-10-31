@@ -18,7 +18,8 @@ extension UIImage {
         
         let manager = PHImageManager.default()
         let option = PHImageRequestOptions()
-        option.isSynchronous = true
+        // option.isSynchronous = true
+        option.isNetworkAccessAllowed = true
         manager.requestImage(for: asset, targetSize: CGSize(width: size, height: size), contentMode: .aspectFill, options: option) { (result, info) in
             if let result = result {
                 image = result
