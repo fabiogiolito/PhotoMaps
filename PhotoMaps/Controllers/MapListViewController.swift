@@ -72,9 +72,6 @@ class MapListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutSubviews()
-
-        // Register cells
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier.mapListItem.rawValue)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,15 +96,18 @@ class MapListViewController: UITableViewController {
     
     // Build cells
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.mapListItem.rawValue, for: indexPath)
-        cell.textLabel?.text = userData.maps[indexPath.row].name
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 88, height: 44))
-        label.text = "photo".pluralize(count: userData.maps[indexPath.row].locations.count)
-        label.textColor = UIColor.grayLight()
-        label.textAlignment = .right
-        label.font = UIFont.caption()
-        cell.accessoryView = label
-        return cell
+        var cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.mapListItem.rawValue)
+        if (cell == nil) {
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: CellIdentifier.mapListItem.rawValue)
+        }
+        cell!.textLabel?.text = userData.maps[indexPath.row].name
+        cell!.detailTextLabel?.text = "photo".pluralize(count: userData.maps[indexPath.row].locations.count)
+        return cell!
+    }
+
+    // Cell height
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
     }
 
     // Selected a map
