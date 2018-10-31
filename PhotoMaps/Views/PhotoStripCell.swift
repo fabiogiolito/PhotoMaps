@@ -59,6 +59,7 @@ class PhotoStripCell: UICollectionViewCell {
         addSubview(stackView)
         stackView.fillSuperview()
         
+        imageView.anchorSquare(ratio: 1)
     }
     
     required init?(coder aDecoder: NSCoder) {
