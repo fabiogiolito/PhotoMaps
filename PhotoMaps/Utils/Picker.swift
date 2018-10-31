@@ -15,6 +15,8 @@ extension TLPhotosPickerViewController {
         
         var configure = TLPhotosPickerConfigure()
         configure.usedCameraButton = false
+        configure.allowedVideo = false
+        configure.mediaType = .image
         configure.numberOfColumn = 4
         configure.nibSet = (nibName: "CustomImagePickerCell", bundle: Bundle.main)
         imagePicker.configure = configure
