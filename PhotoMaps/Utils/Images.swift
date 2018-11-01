@@ -17,11 +17,11 @@ extension UIImage {
         guard let asset = asset else { return image }
         
         let manager = PHImageManager.default()
-        let option = PHImageRequestOptions()
-        option.isSynchronous = true
-        option.isNetworkAccessAllowed = true
-        option.deliveryMode = .highQualityFormat
-        manager.requestImage(for: asset, targetSize: CGSize(width: size, height: size), contentMode: .aspectFill, options: option) { (result, info) in
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+        manager.requestImage(for: asset, targetSize: CGSize(width: size, height: size), contentMode: .aspectFill, options: options) { (result, info) in
             if let result = result {
                 image = result
             }
