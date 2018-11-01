@@ -25,7 +25,6 @@
 		DAAC003C2178A61D00EF46A6 /* AccessDeniedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */; };
 		DAAC003E2178A67000EF46A6 /* MapListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003D2178A67000EF46A6 /* MapListViewController.swift */; };
 		DAAC00402178AF2C00EF46A6 /* Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC003F2178AF2C00EF46A6 /* Picker.swift */; };
-		DAAC00422178E0BD00EF46A6 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC00412178E0BD00EF46A6 /* Images.swift */; };
 		DAAC0048217936FB00EF46A6 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC0047217936FB00EF46A6 /* UserData.swift */; };
 		DAAC004A217A153600EF46A6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAC0049217A153600EF46A6 /* MapViewController.swift */; };
 		DAAF2354217F79FE00D12A4F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAF2353217F79FE00D12A4F /* String.swift */; };
@@ -58,7 +57,6 @@
 		DAAC003B2178A61D00EF46A6 /* AccessDeniedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessDeniedViewController.swift; sourceTree = "<group>"; };
 		DAAC003D2178A67000EF46A6 /* MapListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListViewController.swift; sourceTree = "<group>"; };
 		DAAC003F2178AF2C00EF46A6 /* Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picker.swift; sourceTree = "<group>"; };
-		DAAC00412178E0BD00EF46A6 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		DAAC0047217936FB00EF46A6 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		DAAC0049217A153600EF46A6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		DAAF2353217F79FE00D12A4F /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -146,7 +144,6 @@
 				DA616D2F2177CB2100DB331E /* TextView.swift */,
 				DA616D372177D4D300DB331E /* Labels.swift */,
 				DAAC003F2178AF2C00EF46A6 /* Picker.swift */,
-				DAAC00412178E0BD00EF46A6 /* Images.swift */,
 				DAAF2353217F79FE00D12A4F /* String.swift */,
 			);
 			path = Utils;
@@ -312,7 +309,6 @@
 				DAAF2354217F79FE00D12A4F /* String.swift in Sources */,
 				DA851F18217CF07800C770F4 /* EmptyStateView.swift in Sources */,
 				DA616D362177CB2200DB331E /* Font.swift in Sources */,
-				DAAC00422178E0BD00EF46A6 /* Images.swift in Sources */,
 				DAA04A62217A52160039E2E1 /* PhotoStripCollectionView.swift in Sources */,
 				DA616D382177D4D300DB331E /* Labels.swift in Sources */,
 				DAAC00402178AF2C00EF46A6 /* Picker.swift in Sources */,

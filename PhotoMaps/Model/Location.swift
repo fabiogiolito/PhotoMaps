@@ -52,11 +52,6 @@ struct Location: Codable, Equatable {
         }
     }
     
-    var image: UIImage {
-        get {
-            return UIImage.fromAsset(photoAsset)
-        }
-    }
     
     // ==========================
     // FUNCTIONS
@@ -67,5 +62,19 @@ struct Location: Codable, Equatable {
             return jsonData
         }
         return nil
+    }
+    
+    func fetchImage(_ forSize: CGFloat = 500, _ completion: @escaping ((_ image: UIImage) -> Void)) {
+        guard let asset = photoAsset else { return }
+        let manager = PHImageManager.default()
+        let options = PHImageRequestOptions()
+        options.isSynchronous = false
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+        manager.requestImage(for: asset, targetSize: CGSize(width: forSize, height: forSize), contentMode: .aspectFill, options: options) { (result, info) in
+            if let result = result {
+                completion(result)
+            }
+        }
     }
 }

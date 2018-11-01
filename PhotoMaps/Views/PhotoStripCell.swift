@@ -15,7 +15,9 @@ class PhotoStripCell: UICollectionViewCell {
     
     var location: Location! {
         didSet {
-            imageView.image = location.image
+            location.fetchImage { (image) in
+                self.imageView.image = image
+            }
             locationName.text = location.name == "" ? " " : location.name
             locationAddress.text = location.address == "" ? " " : location.address
         }
@@ -26,6 +28,7 @@ class PhotoStripCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imgView = UIImageView()
+        imgView.image = UIImage(named: "image_placeholder")!
         imgView.clipsToBounds = true
         imgView.contentMode = .scaleAspectFill
         imgView.layer.cornerRadius = 2

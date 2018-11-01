@@ -15,7 +15,9 @@ class LocationCell: UITableViewCell, UITextFieldDelegate {
     
     var location: Location! {
         didSet {
-            thumbnailView.image = location.image
+            location.fetchImage { (image) in
+                self.thumbnailView.image = image
+            }
             locationNameLabel.text = location.name
             locationAddressLabel.text = location.address
         }
@@ -28,10 +30,11 @@ class LocationCell: UITableViewCell, UITextFieldDelegate {
     // MARK:- SUBVIEWS
     
     let thumbnailView: UIImageView = {
-        let img = UIImageView()
-        img.contentMode = .scaleAspectFill
-        img.clipsToBounds = true
-        return img
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "image_placeholder")!
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
     }()
 
     lazy var locationNameLabel: UITextField = {
@@ -54,11 +57,9 @@ class LocationCell: UITableViewCell, UITextFieldDelegate {
 
     
     // =========================================
-    // MARK:- INITIALIZER
+    // MARK:- LAYOUT SUBVIEWS
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+    override func layoutSubviews() {
         separatorInset = UIEdgeInsets(top: 0, left: 96, bottom: 0, right: 0)
         
         addSubview(thumbnailView)
@@ -73,7 +74,21 @@ class LocationCell: UITableViewCell, UITextFieldDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.leftAnchor.constraint(equalTo: thumbnailView.rightAnchor, constant: 16).isActive = true
         stackView.centerYAnchor.constraint(equalTo: thumbnailView.centerYAnchor).isActive = true
+    }
+    
+    // Clear image before reusing cell
+    override func prepareForReuse() {
+        thumbnailView.image = UIImage(named: "image_placeholder")!
+    }
+    
+    
+    // =========================================
+    // MARK:- INITIALIZER
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        layoutSubviews()
     }
     
     required init?(coder aDecoder: NSCoder) {
