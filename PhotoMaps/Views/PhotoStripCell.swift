@@ -15,7 +15,7 @@ class PhotoStripCell: UICollectionViewCell {
     
     var location: Location! {
         didSet {
-            location.fetchImage { (image) in
+            location.fetchImage(forSize: frame.width) { (image) in
                 self.imageView.image = image
             }
             locationName.text = location.name == "" ? " " : location.name

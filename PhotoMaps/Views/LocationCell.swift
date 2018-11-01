@@ -15,7 +15,7 @@ class LocationCell: UITableViewCell, UITextFieldDelegate {
     
     var location: Location! {
         didSet {
-            location.fetchImage { (image) in
+            location.fetchImage(forSize: 80) { (image) in
                 self.thumbnailView.image = image
             }
             locationNameLabel.text = location.name

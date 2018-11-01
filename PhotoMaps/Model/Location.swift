@@ -64,7 +64,7 @@ struct Location: Codable, Equatable {
         return nil
     }
     
-    func fetchImage(_ forSize: CGFloat = 500, _ completion: @escaping ((_ image: UIImage) -> Void)) {
+    func fetchImage(forSize: CGFloat = 500, _ completion: @escaping ((_ image: UIImage) -> Void)) {
         guard let asset = photoAsset else { return }
         let manager = PHImageManager.default()
         let options = PHImageRequestOptions()
