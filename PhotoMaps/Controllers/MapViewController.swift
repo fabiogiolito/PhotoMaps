@@ -16,12 +16,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
     // MARK:- MODEL
     
     var userData = UserData.init()
-    var map: Map! {
-        didSet {
-            photoStripCollectionView.map = map // load photo strip
-            loadDataOnMap() // load map pins
-        }
-    }
+    var map: Map!
 
     
     // =========================================
@@ -62,6 +57,12 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
         return btn
     }()
     
+    let spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .gray)
+        spinner.startAnimating()
+        return spinner
+    }()
+    
     
     // =========================================
     // MARK:- LAYOUT SUBVIEWS
@@ -84,7 +85,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
         
         mapView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: photoStripContainer.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
-        recenterMapButton.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 32, height: 32)
+        recenterMapButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 32, height: 32)
     }
     
     // =========================================
@@ -92,13 +93,16 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        layoutSubviews()
         mapView.delegate = self
         photoStripCollectionView.photoStripDelegate = self
-        loadDataOnMap()
+        
         title = map.name
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: spinner)
+        
+        layoutSubviews()
+        loadDataOnMap()
     }
-
     
     // =========================================
     // MARK:- ACTION FUNCTIONS
@@ -112,47 +116,49 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
     
     // Fill map
     func loadDataOnMap() {
-        mapView.removeAnnotations(mapView.annotations) // Remove all annotations to start over
-        mapView.removeOverlays(mapView.overlays) // Remove all overlays to start over
         
-        // Add locations
-        for (index, location) in map.locations.enumerated() {
-            mapView.addAnnotation(location.pin)
-            if index > 0 {
-                // Add routes
-                requestRoute(source: map.locations[index - 1], destination: location)
+        var pins: [MKPointAnnotation] = []
+        var polylines: [MKPolyline] = []
+        
+        DispatchQueue.global(qos: .background).async {
+            for (index, location) in self.map.locations.enumerated() {
+                
+                pins.append(location.pin)
+                
+                if index != 0 {
+                    let request = MKDirections.Request()
+                    
+                    // Define points
+                    request.source = self.map.locations[index - 1].mapItem
+                    request.destination = location.mapItem
+                    
+                    // Define transport type
+                    request.transportType = .walking
+                    
+                    // Calculate directions
+                    let directions = MKDirections(request: request)
+                    directions.calculate { (response, error) in
+                        if error != nil {
+                            print("Error calculating route:", error)
+                        }
+                        guard let response = response else { return }
+                        guard let route = response.routes.first else { return }
+                        polylines.append(route.polyline)
+                    }
+                }
+            }
+            DispatchQueue.main.async {
+                self.mapView.addAnnotations(pins)
+                self.mapView.addOverlays(polylines)
+                self.focusOnAnnotations(pins)
+                self.spinner.stopAnimating()
             }
         }
-        
-        // Zoom to fit annotations
-        focusOnAnnotations(mapView.annotations)
     }
     
     // Request route
-    func requestRoute(source: Location, destination: Location) {
+    func requestRoutes() {
         
-        // Ignore if different days
-        if source.date.description.prefix(10) != destination.date.description.prefix(10) {
-            return
-        }
-        
-        let request = MKDirections.Request()
-        
-        // Define points
-        request.source = source.mapItem
-        request.destination = destination.mapItem
-        
-        // Define transport types
-        request.transportType = .walking
-        
-        // Calculate directions
-        let directions = MKDirections(request: request)
-        directions.calculate { [unowned self] (response, error) in
-            guard let response = response else { return }
-            for route in response.routes {
-                self.mapView.addOverlay(route.polyline)
-            }
-        }
     }
     
     // Render route line on map
