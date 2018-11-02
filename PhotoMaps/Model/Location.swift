@@ -65,13 +65,14 @@ struct Location: Codable, Equatable {
     }
     
     func fetchImage(forSize: CGFloat = 500, _ completion: @escaping ((_ image: UIImage) -> Void)) {
+        let size = forSize * UIScreen.main.scale
         guard let asset = photoAsset else { return }
         let manager = PHImageManager.default()
         let options = PHImageRequestOptions()
         options.isSynchronous = false
         options.isNetworkAccessAllowed = true
         options.deliveryMode = .highQualityFormat
-        manager.requestImage(for: asset, targetSize: CGSize(width: forSize, height: forSize), contentMode: .aspectFill, options: options) { (result, info) in
+        manager.requestImage(for: asset, targetSize: CGSize(width: size, height: size), contentMode: .aspectFill, options: options) { (result, info) in
             if let result = result {
                 completion(result)
             }
