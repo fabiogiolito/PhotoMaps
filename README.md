@@ -30,10 +30,10 @@ Progress list:
 - [x] Auto detect location name and address from coordinates
 - [x] Edit location name and address
 - [x] Show location name and address on map
+- [x] Load photos from iCloud
+- [x] Filter out videos from picker
 
-- [ ] Load photos from iCloud
-- [ ] Play videos on photo strip or filter them out from picker
 - [ ] Filter out photos without location from picker
-- [ ] Detect and handle routes not found
+- [ ] Handle duplicate photos
 
 - [ ] Make map sharable 
