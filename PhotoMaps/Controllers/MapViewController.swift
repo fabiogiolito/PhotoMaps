@@ -116,14 +116,26 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
     
     // Fill map
     func loadDataOnMap() {
-        
         var pins: [MKPointAnnotation] = []
+        
+        DispatchQueue.global(qos: .background).async {
+            for location in self.map.locations {
+                pins.append(location.pin)
+            }
+            DispatchQueue.main.async {
+                self.mapView.addAnnotations(pins)
+                self.focusOnAnnotations(pins)
+                self.requestRoutes()
+            }
+        }
+    }
+    
+    // Request route
+    func requestRoutes() {
         var polylines: [MKPolyline] = []
         
         DispatchQueue.global(qos: .background).async {
             for (index, location) in self.map.locations.enumerated() {
-                
-                pins.append(location.pin)
                 
                 if index != 0 {
                     let request = MKDirections.Request()
@@ -139,7 +151,7 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
                     let directions = MKDirections(request: request)
                     directions.calculate { (response, error) in
                         if error != nil {
-                            print("Error calculating route:", error)
+                            print("Error calculating route:", error ?? "")
                         }
                         guard let response = response else { return }
                         guard let route = response.routes.first else { return }
@@ -148,17 +160,10 @@ class MapViewController: UIViewController, PhotoStripDelegate, MKMapViewDelegate
                 }
             }
             DispatchQueue.main.async {
-                self.mapView.addAnnotations(pins)
                 self.mapView.addOverlays(polylines)
-                self.focusOnAnnotations(pins)
                 self.spinner.stopAnimating()
             }
         }
-    }
-    
-    // Request route
-    func requestRoutes() {
-        
     }
     
     // Render route line on map
