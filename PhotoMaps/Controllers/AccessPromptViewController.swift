@@ -68,14 +68,15 @@ class AccessPromptViewController: UIViewController {
         
         view.addSubview(stack)
         
-        stack.fillSuperview(paddingVertical: 24, paddingHorizontal: 40)
+        stack.anchorSize(width: 270, height: 520)
+        stack.anchorCenterIn(view)
+
     }
     
     // =========================================
     // MARK:- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         layoutSubviews()
     }
     
