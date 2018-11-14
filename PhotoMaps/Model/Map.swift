@@ -40,4 +40,14 @@ struct Map: Codable {
         }
         return nil
     }
+    
+    // Find location index from asset Identifier
+    func findLocationIndexFromAssetIdentifier(_ identifier: String) -> Int? {
+        for (index, location) in locations.enumerated() {
+            if location.identifier == identifier {
+                return index
+            }
+        }
+        return nil
+    }
 }

@@ -26,6 +26,8 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         }
     }
     
+    var warningMessage: String?
+    
     enum Section: Int {
         case actions
         case locations
@@ -89,6 +91,15 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         return stack
     }()
     
+    let warningLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.grayLight()
+        label.font = UIFont.displayTextSmall()
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
     
     // =========================================
     // MARK:- LAYOUT SUBVIEWS
@@ -144,6 +155,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         switch Section(rawValue: indexPath.section)! {
         case .actions:
             let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.inputCell.rawValue, for: indexPath)
+            cell.separatorInset = .zero
             cell.addSubview(actionsStack)
             actionsStack.anchorSize(width: 0, height: 88)
             actionsStack.fillSuperview()
@@ -160,7 +172,7 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
         }
     }
     
-    // Selected a map
+    // Selected a row
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch Section(rawValue: indexPath.section)! {
         case .actions:
@@ -176,7 +188,26 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     
     // Provide a footer view to remove placeholder lines on tableview
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return section == 1 ? UIView() : nil
+        if section == 0 {
+            if warningMessage == nil { return nil }
+            
+            let warningView = UIView()
+            warningView.backgroundColor = UIColor.offWhite()
+            warningView.addSubview(warningLabel)
+            warningLabel.fillSuperview()
+            warningLabel.text = warningMessage
+            
+            return warningView
+        }
+        return UIView()
+    }
+    
+    // Footer height
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return warningMessage == nil ? 0 : 50
+        }
+        return 16
     }
     
     // Make cells deletable
@@ -283,22 +314,34 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
         print("----")
         print("dismissed photo picker, number of assets:", withPHAssets.count)
+        
+        var missingDataCount = 0
+        var duplicatedCount = 0
+        var newLocations: [Location] = []
 
         for asset in withPHAssets {
             
             print("asset:", asset)
             
+            if self.map.findLocationIndexFromAssetIdentifier(asset.localIdentifier) != nil {
+                duplicatedCount += 1
+                print("asset already added", duplicatedCount)
+                continue
+            }
+            
             guard
                 let latitude = asset.location?.coordinate.latitude,
                 let longitude = asset.location?.coordinate.longitude
             else {
-                print("no coordinates for selected asset")
-                break
+                missingDataCount += 1
+                print("no coordinates for this asset")
+                continue
             }
             
             guard let date = asset.creationDate else {
-                print("no date for selected asset")
-                break
+                missingDataCount += 1
+                print("no date for this asset")
+                continue
             }
             
             // Create new location
@@ -311,14 +354,31 @@ class EditMapViewController: UITableViewController, TLPhotosPickerViewController
                 date: date
             )
             
-            // Update data
-            var locations = self.map.locations // get current locatiosn
-            locations.append(location) // append new location
-            let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
-            self.map.locations = sortedLocations // update map locations with sorted list
+            // Add location to temporary array
+            newLocations.append(location)
             
             print("number of locations in map now is:", self.map.locations.count)
         }
+        
+        // Update data
+        var locations = self.map.locations // get current locations
+        locations += newLocations // append new location
+        let sortedLocations = locations.sorted { $0.date < $1.date } // sort locations list by date
+        self.map.locations = sortedLocations // update map locations with sorted list
+        
+        
+        // Show warning message
+        print("missingDataCount", missingDataCount)
+        print("duplicatedCount", duplicatedCount)
+        
+        warningMessage = ""
+        if missingDataCount > 0 {
+            warningMessage = "\("image".pluralize(count: missingDataCount)) did not have location data \n"
+        }
+        if duplicatedCount > 0 {
+            warningMessage = "\(warningMessage ?? "") \("image was".pluralize(count: duplicatedCount, with: "images were")) already on your map"
+        }
+        warningMessage = warningMessage?.trimmingCharacters(in: .whitespacesAndNewlines)
         
         print("finished building locations. final count:", self.map.locations.count)
         
