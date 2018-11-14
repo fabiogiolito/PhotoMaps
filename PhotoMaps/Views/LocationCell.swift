@@ -63,17 +63,12 @@ class LocationCell: UITableViewCell, UITextFieldDelegate {
         separatorInset = UIEdgeInsets(top: 0, left: 96, bottom: 0, right: 0)
         
         addSubview(thumbnailView)
+        addSubview(locationNameLabel)
+        addSubview(locationAddressLabel)
+        
         thumbnailView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 80, height: 80)
-        
-        let stackView = UIStackView(arrangedSubviews: [UIView(), locationNameLabel, locationAddressLabel, UIView()])
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.distribution = .fill
-        addSubview(stackView)
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.leftAnchor.constraint(equalTo: thumbnailView.rightAnchor, constant: 16).isActive = true
-        stackView.centerYAnchor.constraint(equalTo: thumbnailView.centerYAnchor).isActive = true
+        locationNameLabel.anchor(top: nil, left: thumbnailView.rightAnchor, bottom: thumbnailView.centerYAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 4, paddingRight: 24, width: 0, height: 0)
+        locationAddressLabel.anchor(top: thumbnailView.centerYAnchor, left: thumbnailView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 0, paddingRight: 24, width: 0, height: 0)
     }
     
     // Clear image before reusing cell
